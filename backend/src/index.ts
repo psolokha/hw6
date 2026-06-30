@@ -13,6 +13,8 @@ import { unknownError } from "./api/errors.js";
 
 const envSchema = z.object({
   PORT: z.coerce.number().int().min(1).max(65535).default(4000),
+  // На облачных хостингах (Render и т.п.) нужно слушать 0.0.0.0, локально — 127.0.0.1.
+  HOST: z.string().default("127.0.0.1"),
   CORS_ORIGIN: z.string().default("http://127.0.0.1:3000"),
 });
 
@@ -38,4 +40,4 @@ app.setErrorHandler((err, req, reply) => {
   reply.status(500).send(unknownError("Внутренняя ошибка сервера"));
 });
 
-await app.listen({ port: env.PORT, host: "127.0.0.1" });
+await app.listen({ port: env.PORT, host: env.HOST });

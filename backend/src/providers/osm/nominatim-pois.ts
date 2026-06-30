@@ -124,7 +124,7 @@ export async function nominatimGetPoisNearby(params: {
 
 export async function nominatimGetPoiById(id: string): Promise<PoiDTO | null> {
   const m = /^nominatim:(\d+)$/.exec(id);
-  if (!m) return null;
+  if (!m || !m[1]) return null;
 
   const env = getEnv();
   const placeId = m[1];
