@@ -18,6 +18,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert"
 import { cn } from "@/lib/utils"
 import { LocationIndicator } from "@/components/location-indicator"
 import { supabase } from "@/lib/supabase-client"
+import { getBackendUrl } from "@/lib/backend-url"
 import { clearFavorites, loadFavorites } from "@/lib/app-storage"
 
 type AuthMode = "login" | "register"
@@ -123,7 +124,7 @@ export function AppHeader() {
       if (session?.access_token) {
         const local = loadFavorites()
         if (local.length) {
-          void fetch(new URL("/api/favorites/sync", process.env.NEXT_PUBLIC_BACKEND_URL), {
+          void fetch(new URL("/api/favorites/sync", getBackendUrl()), {
             method: "POST",
             headers: {
               "Content-Type": "application/json",

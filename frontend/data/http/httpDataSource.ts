@@ -5,12 +5,7 @@ import type { CategoryDTO, FavoritesEntryDTO, Id, LocationSuggestionDTO, PoiDTO,
 import { ApiError, type ApiErrorKind } from "@/data/errors"
 import { addFavorite, loadFavorites, removeFavorite as removeLocalFavorite } from "@/lib/app-storage"
 import { getAccessToken } from "@/lib/supabase-client"
-
-function getBackendUrl(): string {
-  const v = process.env.NEXT_PUBLIC_BACKEND_URL
-  if (!v) throw new Error("NEXT_PUBLIC_BACKEND_URL is not set")
-  return v
-}
+import { getBackendUrl } from "@/lib/backend-url"
 
 async function http<T>(path: string, init?: RequestInit & { signal?: AbortSignal }): Promise<T> {
   const url = new URL(path, getBackendUrl()).toString()

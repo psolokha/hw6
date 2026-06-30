@@ -9,6 +9,7 @@ import type { FavoritesEntryDTO, PoiDTO } from "@/data/types"
 import { getNavigatorDataSource } from "@/lib/navigator-client"
 import { useToast } from "@/hooks/use-toast"
 import { withBasePath } from "@/lib/with-base-path"
+import { getBackendUrl } from "@/lib/backend-url"
 
 function openInMaps(lat: number, lng: number) {
   const url = `https://yandex.ru/maps/?pt=${lng},${lat}&z=16&l=map`
@@ -31,11 +32,7 @@ export function PoiDetailClient({ id }: { id: string }) {
       setPoi(null)
       return
     }
-    const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL
-    if (!backendUrl) {
-      setPoi(null)
-      return
-    }
+    const backendUrl = getBackendUrl()
     let cancelled = false
     ;(async () => {
       try {
