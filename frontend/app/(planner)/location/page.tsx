@@ -35,21 +35,26 @@ export default function LocationPage() {
       setError(null)
       return
     }
+    const controller = new AbortController()
     const t = setTimeout(async () => {
       setLoading(true)
       setError(null)
       try {
-        const list = await nav.searchLocations(q)
+        const list = await nav.searchLocations(q, { signal: controller.signal })
         setSuggestions(list)
       } catch (e) {
+        if (e instanceof DOMException && e.name === "AbortError") return
         if (e instanceof ApiError) setError(e.message)
         else setError("Не удалось выполнить поиск")
         setSuggestions([])
       } finally {
-        setLoading(false)
+        if (!controller.signal.aborted) setLoading(false)
       }
     }, 320)
-    return () => clearTimeout(t)
+    return () => {
+      clearTimeout(t)
+      controller.abort()
+    }
   }, [query, nav])
 
   const pickCity = useCallback(

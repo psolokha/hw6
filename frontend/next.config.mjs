@@ -7,6 +7,9 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const nextConfig = {
   // Интеграция с backend требует runtime (не static export).
   // Указываем корень фронтенда, чтобы Next не пытался “угадать” его по lockfile в workspace root.
+  experimental: {
+    optimizePackageImports: ["lucide-react"],
+  },
   turbopack: {
     root: __dirname,
   },

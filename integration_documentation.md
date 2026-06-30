@@ -1,6 +1,6 @@
 # Документация по интеграциям и деплою (HW6)
 
-> Документ ведётся по мере выполнения шагов задания. Текущий охват: **Шаг 1 — CI/CD**, **Шаг 2 — безопасность**, **Шаг 3 — OAuth2**, **Шаг 4 — аналитика**, **Шаг 5 — пропущен (опционально)**, **Шаг 6 — мониторинг**, **Шаг 7 — логирование**.
+> Документ ведётся по мере выполнения шагов задания. Текущий охват: **Шаг 1 — CI/CD**, **Шаг 2 — безопасность**, **Шаг 3 — OAuth2**, **Шаг 4 — аналитика**, **Шаг 5 — пропущен (опционально)**, **Шаг 6 — мониторинг**, **Шаг 7 — логирование**, **Шаг 8 — тестирование и оптимизация**.
 
 ## Технологический стек
 
@@ -461,6 +461,33 @@ flowchart LR
 | `auth_failed` | Ожидаемо без Bearer — не инцидент |
 | `favorites_list_failed` + `userId` | Проблема Supabase/БД для конкретного пользователя |
 | `statusCode: 429` | Rate limit сработал — проверить источник запросов |
+
+## Статус (Шаг 8)
+
+- Регрессия интеграций: OAuth UI, health (backend/frontend), аналитика (без ошибок в консоли), платежи пропущены — E2E `integrations-regression.spec.ts`.
+- Оптимизации: in-memory кэш категорий на клиенте, `Cache-Control` на `/api/categories`, отмена устаревших запросов поиска локаций (`AbortController`), `optimizePackageImports` для `lucide-react`.
+- Полный прогон E2E (27 тестов) и prod health — зелёные.
+
+### Оптимизации производительности
+
+| Область | Изменение | Эффект |
+|---------|-----------|--------|
+| Backend `/api/categories` | `Cache-Control: public, max-age=86400, stale-while-revalidate=3600` | Браузер/CDN кэширует статический список категорий |
+| Frontend `HttpNavigatorDataSource` | Singleton-promise для `getCategories()` | Повторные переходы между страницами не дублируют запрос |
+| Поиск локаций | `AbortController` при смене запроса | Отмена устаревших ответов, меньше гонок состояния |
+| Next.js | `experimental.optimizePackageImports: ["lucide-react"]` | Меньший client bundle за счёт tree-shaking иконок |
+
+Провайдер OSM уже кэшируется в Supabase (`provider_cache`, TTL `CACHE_TTL_SECONDS`).
+
+### Регрессионное тестирование интеграций
+
+| Интеграция | Проверка |
+|------------|----------|
+| CI/CD | E2E smoke health backend + frontend; GitHub Actions `ci.yml` + `uptime-monitor.yml` |
+| OAuth2 | E2E: кнопка «Войти через Google» в диалоге |
+| Аналитика | E2E: навигация без критичных console errors; при `NEXT_PUBLIC_YM_COUNTER_ID` — тег `#yandex-metrika` |
+| Платежи | Шаг 5 пропущен — E2E: нет UI оплаты |
+| Мониторинг | Health endpoints в E2E и prod |
 
 ## Статус (Шаг 7)
 

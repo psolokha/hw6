@@ -22,6 +22,8 @@ test.describe("API smoke", () => {
   test("Backend categories", async ({ request }) => {
     const res = await request.get("http://127.0.0.1:4000/api/categories");
     expect(res.ok()).toBeTruthy();
+    const cacheControl = res.headers()["cache-control"] ?? "";
+    expect(cacheControl).toMatch(/max-age=\d+/);
     const body = await res.json();
     expect(Array.isArray(body)).toBeTruthy();
     expect(body.length).toBeGreaterThan(0);

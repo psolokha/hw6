@@ -48,6 +48,8 @@ async function http<T>(path: string, init?: RequestInit & { signal?: AbortSignal
   return json as T
 }
 
+let categoriesCache: Promise<CategoryDTO[]> | null = null
+
 async function authedInit(init?: RequestInit): Promise<RequestInit> {
   const token = await getAccessToken()
   if (!token) return init ?? {}
@@ -70,7 +72,16 @@ export class HttpNavigatorDataSource implements NavigatorDataSource {
   }
 
   async getCategories(opts?: RequestOptions): Promise<CategoryDTO[]> {
-    return await http<CategoryDTO[]>("/api/categories", { signal: opts?.signal })
+    if (opts?.signal) {
+      return await http<CategoryDTO[]>("/api/categories", { signal: opts.signal })
+    }
+    if (!categoriesCache) {
+      categoriesCache = http<CategoryDTO[]>("/api/categories").catch((err) => {
+        categoriesCache = null
+        throw err
+      })
+    }
+    return categoriesCache
   }
 
   async getPois(params: GetPoisParams, opts?: RequestOptions): Promise<PoiDTO[]> {
