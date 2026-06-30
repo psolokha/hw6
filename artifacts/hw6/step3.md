@@ -33,14 +33,3 @@ npm run test:e2e              # 22 passed (добавлены oauth + auth/me sm
 Ручная проверка после настройки провайдера:
 - https://hw6-pi-ruddy.vercel.app/catalog → «Войти» → «Войти через Google» → успешный вход.
 - `GET https://hw6-ac72.vercel.app/api/auth/me` с Bearer JWT → `provider: "google"`.
-
-## Решения и компромиссы
-
-- **Провайдер Google** (не Yandex): нативная поддержка Supabase, меньше кастомного кода; Yandex можно добавить как custom OIDC позже.
-- **OAuth flow на Supabase**, не на Fastify: JWT уже проверяется бэкендом; отдельный token exchange на backend дублировал бы Supabase.
-- **Email/пароль** сохранён для E2E и пользователей без Google.
-
-## Что потребовало участия пользователя
-
-- Создать OAuth client в **Google Cloud Console** (Client ID/Secret).
-- Включить Google в **Supabase** → Providers и добавить redirect URLs (см. `integration_documentation.md`).

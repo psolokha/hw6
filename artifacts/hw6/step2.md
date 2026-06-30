@@ -24,14 +24,3 @@ npm --prefix backend run typecheck && npm --prefix backend run build
 npm audit --audit-level=high  # в frontend/ и backend/
 npm run test:e2e              # 19/19 passed
 ```
-
-## Решения и компромиссы
-
-- **PostCSS moderate** (transitive в Next.js) — не фиксируется без downgrade; принят риск, CI на `--audit-level=high`.
-- **esbuild low** (dev через tsx) — только локальная разработка, не в production.
-- **photoUrl** в build API — разрешены относительные пути (`/poi/...`) и http(s); `externalUrl` — только http(s).
-- **CSRF** — API на Bearer JWT, не cookie-based; отдельный CSRF-токен не вводился.
-
-## Что потребовало участия пользователя
-
-Не потребовало.

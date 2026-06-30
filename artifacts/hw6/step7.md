@@ -30,14 +30,3 @@ npm run test:e2e   # 23 passed
 Локально: `cd backend && npm run dev` → `curl http://127.0.0.1:4000/api/health` — в терминале JSON с `event: http_request`.
 
 Prod: Vercel → `hw6-backend` → **Logs**.
-
-## Решения и компромиссы
-
-- **Централизованное хранение** — Vercel Runtime Logs (бесплатно, без отдельного ELK/Datadog на Hobby).
-- **Frontend** не логирует на сервере структурированно — фокус на API; клиентские ошибки остаются в браузере / Vercel Analytics.
-- **Поисковые запросы OSM** в логах не сохраняются целиком — только `queryLength`, чтобы не копить PII/лишние данные.
-- **userId** (UUID) в ошибках favorites — для корреляции инцидентов без email.
-
-## Что потребовало участия пользователя
-
-- Не потребовало. Для просмотра prod-логов: Vercel Dashboard → проект backend → Logs.

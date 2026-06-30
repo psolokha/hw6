@@ -57,14 +57,3 @@ npm run test:e2e
 ```
 
 Prod: `GET /api/health` на обоих URL.
-
-## Что потребовало участия пользователя
-
-- Настройка Google OAuth и Supabase Auth (шаг 3) — Client ID/Secret, redirect URLs.
-- `NEXT_PUBLIC_YM_COUNTER_ID` в Vercel (шаг 4).
-- GitHub Secrets для E2E в CI.
-
-## Решения
-
-- Документы сокращены до минимума для сдачи; детали шагов — в `artifacts/hw6/step*.md`.
-- Платежи не интегрированы (шаг 5 опционален).
