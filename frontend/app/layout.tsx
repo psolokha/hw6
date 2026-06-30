@@ -1,6 +1,8 @@
 import type { Metadata } from "next"
+import { Suspense } from "react"
 import { Plus_Jakarta_Sans } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
+import { YandexMetrika } from "@/components/yandex-metrika"
 import { Toaster } from "@/components/ui/toaster"
 import "./globals.css"
 
@@ -43,6 +45,9 @@ export default function RootLayout({
       <body className={`${plusJakarta.variable} font-sans antialiased`}>
         {children}
         <Toaster />
+        <Suspense fallback={null}>
+          <YandexMetrika />
+        </Suspense>
         {process.env.NODE_ENV === "production" && <Analytics />}
       </body>
     </html>

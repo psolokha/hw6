@@ -10,6 +10,7 @@ import type { FavoritesEntryDTO, PoiDTO, RouteVariantDTO } from "@/data/types"
 import { ApiError } from "@/data/errors"
 import { getNavigatorDataSource } from "@/lib/navigator-client"
 import { loadRouteBuildDraft } from "@/lib/app-storage"
+import { AnalyticsEvents, trackEvent } from "@/lib/analytics"
 import { useToast } from "@/hooks/use-toast"
 
 const kindLabel: Record<RouteVariantDTO["kind"], string> = {
@@ -95,7 +96,12 @@ export default function RouteResultsPage() {
           targetDistanceKm: draft.targetDistanceKm,
           maxVariants: 3,
         })
-        if (!cancelled) setVariants(list)
+        if (!cancelled) {
+          setVariants(list)
+          if (list.length > 0) {
+            trackEvent(AnalyticsEvents.ROUTE_BUILT, { variants_count: list.length })
+          }
+        }
       } catch (e) {
         if (!cancelled) {
           if (e instanceof ApiError) setError(e.message)
@@ -125,6 +131,7 @@ export default function RouteResultsPage() {
     void (async () => {
       try {
         await nav.saveFavorite(entry)
+        trackEvent(AnalyticsEvents.FAVORITE_ADDED, { type: "route" })
         toast({ title: "Сохранено", description: "Маршрут добавлен в избранное." })
       } catch {
         toast({ title: "Уже в избранном", description: "Этот вариант уже сохранён." })

@@ -11,6 +11,7 @@ import type { LocationSelectionDTO, LocationSuggestionDTO } from "@/data/types"
 import { getNavigatorDataSource } from "@/lib/navigator-client"
 import { NEARBY_RADIUS_METERS } from "@/lib/app-config"
 import { loadLocation, saveLocation } from "@/lib/app-storage"
+import { AnalyticsEvents, trackEvent } from "@/lib/analytics"
 import { ApiError } from "@/data/errors"
 
 export default function LocationPage() {
@@ -66,6 +67,7 @@ export default function LocationPage() {
       saveLocation(sel)
       setCurrent(sel)
       setGeoHint(null)
+      trackEvent(AnalyticsEvents.LOCATION_SELECTED, { mode: "city" })
       router.push("/catalog")
     },
     [router],
@@ -89,6 +91,7 @@ export default function LocationPage() {
         saveLocation(sel)
         setCurrent(sel)
         setLoading(false)
+        trackEvent(AnalyticsEvents.LOCATION_SELECTED, { mode: "nearby" })
         router.push("/catalog")
       },
       () => {

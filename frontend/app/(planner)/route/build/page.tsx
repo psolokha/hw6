@@ -18,6 +18,7 @@ import {
   peekPendingRoutePois,
   saveRouteBuildDraft,
 } from "@/lib/app-storage"
+import { AnalyticsEvents, trackEvent } from "@/lib/analytics"
 
 const MIN_KM = 2
 const MAX_KM = 50
@@ -183,6 +184,10 @@ export default function RouteBuildPage() {
         pois: resolvedPois,
       })
       clearPendingRoutePoiIds()
+      trackEvent(AnalyticsEvents.ROUTE_BUILD_SUBMIT, {
+        target_km: km,
+        poi_count: resolvedPois.length,
+      })
       router.replace("/route/results")
     } catch (err) {
       setGeoError(err instanceof Error ? err.message : "Не удалось подготовить маршрут")

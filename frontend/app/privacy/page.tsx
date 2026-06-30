@@ -43,6 +43,17 @@ export default function PrivacyPage() {
         </section>
 
         <section className="rounded-xl border border-border bg-card p-4 sm:p-6">
+          <h2 className="text-lg font-semibold text-foreground">Аналитика</h2>
+          <p className="mt-3 text-sm text-muted-foreground">
+            На продакшене приложение использует{" "}
+            <span className="font-medium text-foreground">Яндекс.Метрику</span> (при заданном
+            счётчике) и <span className="font-medium text-foreground">Vercel Analytics</span> для
+            обезличенной статистики посещений и ключевых действий (выбор локации, построение
+            маршрута, вход). Данные не содержат паролей и содержимого избранного.
+          </p>
+        </section>
+
+        <section className="rounded-xl border border-border bg-card p-4 sm:p-6">
           <h2 className="text-lg font-semibold text-foreground">Как очистить данные</h2>
           <p className="mt-3 text-sm text-muted-foreground">
             Вы можете удалить сохранённые данные через настройки сайта в браузере (Local Storage)

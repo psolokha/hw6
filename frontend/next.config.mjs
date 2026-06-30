@@ -38,11 +38,11 @@ const nextConfig = {
       "form-action 'self'",
       "frame-ancestors 'none'",
       "object-src 'none'",
-      `connect-src 'self' ${backendUrl} https://${supabaseHost} wss://${supabaseHost} https://va.vercel-scripts.com https://accounts.google.com`,
-      "img-src 'self' data: blob: https:",
+      `connect-src 'self' ${backendUrl} https://${supabaseHost} wss://${supabaseHost} https://va.vercel-scripts.com https://accounts.google.com https://mc.yandex.ru https://mc.yandex.com`,
+      "img-src 'self' data: blob: https: https://mc.yandex.ru",
       "font-src 'self' https://fonts.gstatic.com",
       "style-src 'self' 'unsafe-inline'",
-      "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://api-maps.yandex.ru https://yastatic.net https://va.vercel-scripts.com",
+      "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://api-maps.yandex.ru https://yastatic.net https://va.vercel-scripts.com https://mc.yandex.ru https://mc.yandex.com",
     ].join("; ")
 
     return [

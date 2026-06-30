@@ -27,6 +27,7 @@ import { supabase } from "@/lib/supabase-client"
 import { getBackendUrl } from "@/lib/backend-url"
 import { clearFavorites, loadFavorites } from "@/lib/app-storage"
 import { formatOAuthError } from "@/lib/oauth"
+import { AnalyticsEvents, trackEvent } from "@/lib/analytics"
 import { OAuthButtons } from "@/components/oauth-buttons"
 
 type AuthMode = "login" | "register"
@@ -131,8 +132,14 @@ export function AppHeader() {
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => setAuthedEmail(data.session?.user.email ?? null))
-    const { data: sub } = supabase.auth.onAuthStateChange((_evt, session) => {
+    const { data: sub } = supabase.auth.onAuthStateChange((event, session) => {
       setAuthedEmail(session?.user.email ?? null)
+      if (event === "SIGNED_IN" && session?.user) {
+        const provider = session.user.app_metadata?.provider as string | undefined
+        if (provider && provider !== "email") {
+          trackEvent(AnalyticsEvents.OAUTH_SUCCESS, { provider })
+        }
+      }
       if (session?.access_token) {
         const local = loadFavorites()
         if (local.length) {
@@ -190,6 +197,7 @@ export function AppHeader() {
           setAuthError(error.message)
           return
         }
+        trackEvent(AnalyticsEvents.AUTH_LOGIN)
         setOpen(false)
         return
       }
@@ -201,9 +209,12 @@ export function AppHeader() {
       }
 
       if (data.session) {
+        trackEvent(AnalyticsEvents.AUTH_SIGNUP)
         setOpen(false)
         return
       }
+
+      trackEvent(AnalyticsEvents.AUTH_SIGNUP)
 
       setAuthInfo(
         "Регистрация успешна. Если включено подтверждение email — проверьте почту, затем войдите.",

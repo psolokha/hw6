@@ -3,6 +3,7 @@
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { formatOAuthError, signInWithOAuth } from "@/lib/oauth"
+import { AnalyticsEvents, trackEvent } from "@/lib/analytics"
 
 type OAuthButtonsProps = {
   onError: (message: string) => void
@@ -14,6 +15,7 @@ export function OAuthButtons({ onError }: OAuthButtonsProps) {
   const handleOAuth = (provider: "google") => {
     void (async () => {
       setLoading(provider)
+      trackEvent(AnalyticsEvents.OAUTH_START, { provider })
       const error = await signInWithOAuth(provider)
       if (error) {
         onError(formatOAuthError(error.message))

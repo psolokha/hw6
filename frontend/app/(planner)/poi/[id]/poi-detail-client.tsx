@@ -11,6 +11,7 @@ import { useToast } from "@/hooks/use-toast"
 import { withBasePath } from "@/lib/with-base-path"
 import { getBackendUrl } from "@/lib/backend-url"
 import { isSafeHttpUrl } from "@/lib/safe-url"
+import { AnalyticsEvents, trackEvent } from "@/lib/analytics"
 
 function openInMaps(lat: number, lng: number) {
   const url = `https://yandex.ru/maps/?pt=${lng},${lat}&z=16&l=map`
@@ -66,6 +67,7 @@ export function PoiDetailClient({ id }: { id: string }) {
     void (async () => {
       try {
         await nav.saveFavorite(entry)
+        trackEvent(AnalyticsEvents.FAVORITE_ADDED, { type: "poi" })
         toast({ title: "Сохранено", description: "Объект добавлен в избранное." })
       } catch {
         toast({ title: "Уже в избранном", description: "Этот объект уже сохранён." })

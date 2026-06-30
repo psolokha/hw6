@@ -49,17 +49,17 @@
 
 ---
 
-## Шаг 4. Аналитика
+## Шаг 4. Аналитика ✅ (выполнен)
 
-**Спросить:** Яндекс.Метрика / GA / другое (бесплатный tier).
+**Цель:** Яндекс.Метрика / GA / другое (бесплатный tier).
 
 **Попросить:** ID счётчика / measurement ID.
 
 **Агент:**
-- [ ] интеграция на frontend (события: page view, ключевые действия)
-- [ ] не ломать CSP/privacy
-- [ ] проверка отправки (network / dashboard)
-- [ ] `artifacts/hw6/step4.md`, `integration_documentation.md`
+- [x] интеграция на frontend (события: page view, ключевые действия)
+- [x] не ломать CSP/privacy
+- [ ] проверка отправки (network / dashboard) — после счётчика у пользователя
+- [x] `artifacts/hw6/step4.md`, `integration_documentation.md`
 
 ---
 

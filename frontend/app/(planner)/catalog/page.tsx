@@ -12,6 +12,7 @@ import type { CategoryDTO, Id, LocationSelectionDTO, PoiDTO } from "@/data/types
 import { ApiError } from "@/data/errors"
 import { getNavigatorDataSource } from "@/lib/navigator-client"
 import { loadLocation, setPendingRoutePois } from "@/lib/app-storage"
+import { AnalyticsEvents, trackEvent } from "@/lib/analytics"
 import { cn } from "@/lib/utils"
 import { withBasePath } from "@/lib/with-base-path"
 
@@ -150,6 +151,7 @@ export default function CatalogPage() {
       return
     }
     setPendingRoutePois(selectedPois)
+    trackEvent(AnalyticsEvents.CATALOG_ROUTE_START, { poi_count: selectedPois.length })
   }
 
   if (!location) {
