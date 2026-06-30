@@ -26,5 +26,13 @@ export function formatOAuthError(message: string): string {
   if (lower.includes("access_denied") || lower.includes("denied")) {
     return "Вход отменён. Попробуйте снова или выберите другой способ."
   }
+  if (lower.includes("unable to exchange external code") || lower.includes("invalid_client")) {
+    return (
+      "Google отклонил обмен кода: неверный Client Secret в Supabase. " +
+      "Откройте Google Cloud Console → Credentials → ваш OAuth client → скопируйте Client Secret заново " +
+      "и вставьте в Supabase → Authentication → Providers → Google (без пробелов). " +
+      "Если секрет пересоздавали — нужен новый."
+    )
+  }
   return message
 }

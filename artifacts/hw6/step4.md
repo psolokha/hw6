@@ -2,7 +2,7 @@
 
 ## Итог
 
-Шаг 4 выполнен в коде: **Яндекс.Метрика** с кастомными целями для ключевых действий, SPA page views, дополнение существующего Vercel Analytics. Для работы на проде нужно создать счётчик и задать `NEXT_PUBLIC_YM_COUNTER_ID` в Vercel.
+Шаг 4 выполнен: **Яндекс.Метрика** с кастомными целями на проде (данные поступают), дополнение Vercel Analytics.
 
 ## Что сделано
 
@@ -39,5 +39,4 @@ npm run test:e2e
 
 ## Что потребовало участия пользователя
 
-- Создать счётчик на [metrika.yandex.ru](https://metrika.yandex.ru/) и добавить `NEXT_PUBLIC_YM_COUNTER_ID` в Vercel (hw6-frontend).
-- Создать цели в интерфейсе Метрики по идентификаторам из `integration_documentation.md`.
+- Создать счётчик на [metrika.yandex.ru](https://metrika.yandex.ru/), `NEXT_PUBLIC_YM_COUNTER_ID` в Vercel, цели в Метрике — **выполнено**, данные на проде отображаются.
