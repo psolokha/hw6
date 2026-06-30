@@ -14,16 +14,16 @@ import {
 const favoritesEntrySchema: z.ZodType<FavoritesEntryDTO> = z.union([
   z.object({
     type: z.literal("poi"),
-    id: z.string().min(1),
-    createdAtIso: z.string().min(1),
+    id: z.string().min(1).max(200),
+    createdAtIso: z.string().min(1).max(64),
     poi: z.any(),
   }),
   z.object({
     type: z.literal("route"),
-    id: z.string().min(1),
-    createdAtIso: z.string().min(1),
+    id: z.string().min(1).max(200),
+    createdAtIso: z.string().min(1).max(64),
     route: z.any(),
-    title: z.string().optional(),
+    title: z.string().max(200).optional(),
   }),
 ]);
 
@@ -82,7 +82,7 @@ export async function registerFavoritesRoutes(app: FastifyInstance) {
     if (!userId)
       return reply.status(401).send({ error: { message: "Не авторизован", kind: "UNKNOWN" } });
 
-    const parsed = z.array(favoritesEntrySchema).safeParse(req.body);
+    const parsed = z.array(favoritesEntrySchema).max(200).safeParse(req.body);
     if (!parsed.success)
       return reply.status(400).send(validationError(zodErrorMessage(parsed.error)));
 

@@ -2,6 +2,7 @@ import { z } from "zod";
 
 import type { LatLng, PoiDTO } from "../../core/contracts.js";
 import { inferCategoryIdsFromOsmTags } from "../../core/categories.js";
+import { sanitizeHttpUrl } from "../../core/safe-url.js";
 import { fetchJson } from "./http.js";
 
 const envSchema = z.object({
@@ -66,7 +67,8 @@ function elementToPoi(el: z.infer<typeof elementSchema>): PoiDTO | null {
   };
 
   if (description) dto.description = description;
-  if (externalUrl) dto.externalUrl = externalUrl;
+  const safeExternal = sanitizeHttpUrl(externalUrl);
+  if (safeExternal) dto.externalUrl = safeExternal;
   return dto;
 }
 

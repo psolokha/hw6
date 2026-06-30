@@ -36,6 +36,14 @@ jobs:
       - name: ESLint (frontend)
         run: npm run lint
 
+      - name: npm audit (frontend, high+)
+        run: npm audit --audit-level=high
+        working-directory: frontend
+
+      - name: npm audit (backend, high+)
+        run: npm audit --audit-level=high
+        working-directory: backend
+
   frontend:
     name: Frontend (typecheck + build)
     runs-on: ubuntu-latest

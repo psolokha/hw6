@@ -2,6 +2,7 @@ import { z } from "zod";
 
 import type { LatLng, PoiDTO } from "../../core/contracts.js";
 import { inferCategoryIdsFromOsmTags } from "../../core/categories.js";
+import { sanitizeHttpUrl } from "../../core/safe-url.js";
 import { fetchJson } from "./http.js";
 
 const envSchema = z.object({
@@ -192,7 +193,8 @@ export async function nominatimGetPoiById(id: string): Promise<PoiDTO | null> {
   if (description) dto.description = description;
 
   const website = raw.extratags?.website ?? raw.extratags?.url;
-  if (website) dto.externalUrl = website;
+  const safeExternal = sanitizeHttpUrl(website);
+  if (safeExternal) dto.externalUrl = safeExternal;
 
   return dto;
 }

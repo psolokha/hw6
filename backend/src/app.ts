@@ -1,4 +1,6 @@
 import cors from "@fastify/cors";
+import helmet from "@fastify/helmet";
+import rateLimit from "@fastify/rate-limit";
 import Fastify, { type FastifyInstance } from "fastify";
 import { z } from "zod";
 
@@ -25,10 +27,26 @@ export async function buildApp(): Promise<FastifyInstance> {
     .map((o) => o.trim().replace(/\/+$/, ""))
     .filter(Boolean);
 
-  const app = Fastify({ logger: true });
+  const app = Fastify({
+    logger: true,
+    bodyLimit: 256 * 1024,
+  });
+
+  await app.register(helmet, {
+    contentSecurityPolicy: false,
+    crossOriginResourcePolicy: { policy: "cross-origin" },
+  });
+
+  await app.register(rateLimit, {
+    max: 120,
+    timeWindow: "1 minute",
+    allowList: (req) => req.url === "/api/health",
+  });
 
   await app.register(cors, {
     origin: origins.length <= 1 ? (origins[0] ?? false) : origins,
+    methods: ["GET", "POST", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
   });
 
   await registerCategoryRoutes(app);

@@ -10,6 +10,7 @@ import { getNavigatorDataSource } from "@/lib/navigator-client"
 import { useToast } from "@/hooks/use-toast"
 import { withBasePath } from "@/lib/with-base-path"
 import { getBackendUrl } from "@/lib/backend-url"
+import { isSafeHttpUrl } from "@/lib/safe-url"
 
 function openInMaps(lat: number, lng: number) {
   const url = `https://yandex.ru/maps/?pt=${lng},${lat}&z=16&l=map`
@@ -139,7 +140,7 @@ export function PoiDetailClient({ id }: { id: string }) {
             <Button variant="outline" className="gap-2" onClick={savePoi}>
               <Heart className="h-4 w-4" />В избранное
             </Button>
-            {poi.externalUrl ? (
+            {poi.externalUrl && isSafeHttpUrl(poi.externalUrl) ? (
               <Button variant="outline" asChild>
                 <a href={poi.externalUrl} target="_blank" rel="noopener noreferrer">
                   Подробнее

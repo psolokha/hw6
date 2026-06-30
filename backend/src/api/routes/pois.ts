@@ -2,6 +2,7 @@ import type { FastifyInstance } from "fastify";
 import { z } from "zod";
 
 import { makeCacheKey, roundCoord } from "../../core/cache-key.js";
+import { CATEGORIES } from "../../core/categories.js";
 import { zodErrorMessage, unknownError, validationError } from "../errors.js";
 import { getProviderCache, setProviderCache } from "../../db/provider-cache.repo.js";
 import { nominatimGetPoiById, nominatimGetPoisNearby } from "../../providers/osm/nominatim-pois.js";
@@ -14,12 +15,14 @@ const envSchema = z.object({
 
 const env = envSchema.parse(process.env);
 
+const VALID_CATEGORY_IDS = new Set(CATEGORIES.map((c) => c.id));
+
 function parseCategoryIds(raw: unknown): string[] | undefined {
   if (typeof raw !== "string") return undefined;
   const items = raw
     .split(",")
     .map((s) => s.trim())
-    .filter(Boolean);
+    .filter((id) => VALID_CATEGORY_IDS.has(id));
   return items.length ? items : undefined;
 }
 

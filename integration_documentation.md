@@ -1,6 +1,6 @@
 # Документация по интеграциям и деплою (HW6)
 
-> Документ ведётся по мере выполнения шагов задания. Текущий охват: **Шаг 1 — CI/CD и деплой**.
+> Документ ведётся по мере выполнения шагов задания. Текущий охват: **Шаг 1 — CI/CD**, **Шаг 2 — безопасность**.
 
 ## Технологический стек
 
@@ -37,7 +37,7 @@ flowchart LR
 
 | Job | Шаги |
 |-----|------|
-| `quality` | `Prettier --check` (весь код) + `ESLint` (frontend, `next/core-web-vitals`) |
+| `quality` | `Prettier --check` (весь код) + `ESLint` (frontend) + `npm audit --audit-level=high` (frontend, backend) |
 | `frontend` | `npm ci` → `npm run typecheck` → `npm run build` |
 | `backend` | `npm ci` → `npm run typecheck` → `npm run build` |
 | `e2e` | Playwright (chromium) с `OSM_MOCK=1`; зависит от `quality`, `frontend`, `backend`; запускается только при наличии секретов |
@@ -92,6 +92,46 @@ URL бэкенда резолвится через `frontend/lib/backend-url.ts`
 - Секреты для E2E добавлены в репозиторий (Settings → Secrets and variables → Actions).
 - Локальный прогон E2E: **19/19 passed** (`OSM_MOCK=1`).
 - Прод задеплоен: фронт `hw6-pi-ruddy.vercel.app`, бэкенд `hw6-ac72.vercel.app`.
+
+## Статус (Шаг 2)
+
+- Аудит зависимостей и кода выполнен, отчёт в `security_audit.md`.
+- Исправления: headers, rate-limit, валидация, Next.js 16.2.9.
+- E2E: **19/19 passed** локально.
+
+## Безопасность (Шаг 2)
+
+Полный отчёт: [`security_audit.md`](security_audit.md).
+
+### Зависимости
+
+- Регулярная проверка: `npm audit` в `frontend/` и `backend/`.
+- CI: job `quality` падает при **high/critical** (`npm audit --audit-level=high`).
+- Next.js обновлён до **16.2.9** (патчи high CVE).
+
+### Backend (Fastify)
+
+| Мера | Реализация |
+|------|------------|
+| Security headers | `@fastify/helmet` |
+| Rate limiting | `@fastify/rate-limit` — 120 req/min, `/api/health` в allowlist |
+| Размер тела | `bodyLimit: 256KB` |
+| CORS | Явный `CORS_ORIGIN`, methods GET/POST/DELETE/OPTIONS |
+| Auth | JWT через Supabase JWKS (`jose`), favorites scope по `user_id` |
+| Валидация | Zod на всех маршрутах; whitelist `categoryIds` |
+| XSS (данные OSM) | `externalUrl` — только http/https (`safe-url.ts`) |
+
+### Frontend (Next.js)
+
+| Мера | Реализация |
+|------|------------|
+| Security headers | CSP, `X-Frame-Options: DENY`, `X-Content-Type-Options: nosniff`, Referrer-Policy |
+| XSS | React escaping; `isSafeHttpUrl` перед внешними ссылками |
+| Секреты | Только `NEXT_PUBLIC_*` в браузере; service role — только backend |
+
+### CSRF
+
+API использует **Bearer JWT** в заголовке `Authorization`, не cookie-сессии — классический CSRF для state-changing запросов маловероятен при корректном CORS.
 
 ## Health Check
 
