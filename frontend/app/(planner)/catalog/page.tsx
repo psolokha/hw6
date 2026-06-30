@@ -133,7 +133,7 @@ export default function CatalogPage() {
   const hasMore = visibleCount < rest.length
   const categoryTitleById = useMemo(
     () => Object.fromEntries(categories.map((c) => [c.id, c.title] as const)),
-    [categories]
+    [categories],
   )
 
   const selectedPois = useMemo(() => {
@@ -203,7 +203,10 @@ export default function CatalogPage() {
             <Badge
               key={c.id}
               variant={selectedCats.has(c.id) ? "default" : "outline"}
-              className={cn("cursor-pointer px-3 py-1", selectedCats.has(c.id) ? "" : "hover:bg-secondary")}
+              className={cn(
+                "cursor-pointer px-3 py-1",
+                selectedCats.has(c.id) ? "" : "hover:bg-secondary",
+              )}
               onClick={() => toggleCategory(c.id)}
             >
               {c.title}
@@ -226,7 +229,13 @@ export default function CatalogPage() {
             </span>
           </div>
           {selectedIds.size ? (
-            <Button type="button" variant="outline" size="sm" className="gap-2" onClick={() => setSelectedIds(new Set())}>
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              className="gap-2"
+              onClick={() => setSelectedIds(new Set())}
+            >
               <X className="h-4 w-4" />
               Очистить выбор
             </Button>
@@ -252,7 +261,11 @@ export default function CatalogPage() {
       {error ? (
         <div className="rounded-lg border border-destructive/40 bg-destructive/10 px-4 py-3 text-sm text-destructive">
           {error}{" "}
-          <Button variant="link" className="h-auto p-0 align-baseline" onClick={() => void reloadPois()}>
+          <Button
+            variant="link"
+            className="h-auto p-0 align-baseline"
+            onClick={() => void reloadPois()}
+          >
             Повторить
           </Button>
         </div>
@@ -280,7 +293,9 @@ export default function CatalogPage() {
           <section className="space-y-3">
             <div className="flex items-center justify-between">
               <h2 className="text-sm font-medium text-muted-foreground">Рекомендуем</h2>
-              <span className="text-xs text-muted-foreground">{normalizedQuery ? "по результатам поиска" : "популярное рядом"}</span>
+              <span className="text-xs text-muted-foreground">
+                {normalizedQuery ? "по результатам поиска" : "популярное рядом"}
+              </span>
             </div>
             <ul className="grid gap-4 sm:grid-cols-2">
               {recommended.map((p) => {
@@ -294,7 +309,11 @@ export default function CatalogPage() {
                       {p.photoUrl ? (
                         <div className="relative h-28 w-28 shrink-0">
                           {/* eslint-disable-next-line @next/next/no-img-element */}
-                          <img src={withBasePath(p.photoUrl)} alt="" className="h-full w-full object-cover" />
+                          <img
+                            src={withBasePath(p.photoUrl)}
+                            alt=""
+                            className="h-full w-full object-cover"
+                          />
                         </div>
                       ) : (
                         <div className="flex h-28 w-28 shrink-0 items-center justify-center bg-secondary text-xs text-muted-foreground">
@@ -308,7 +327,11 @@ export default function CatalogPage() {
                         </p>
                         <div className="mt-2 flex flex-wrap gap-1.5">
                           {p.categories.map((catId) => (
-                            <Badge key={catId} variant="secondary" className="px-2 py-0 text-[10px] font-normal">
+                            <Badge
+                              key={catId}
+                              variant="secondary"
+                              className="px-2 py-0 text-[10px] font-normal"
+                            >
                               {categoryTitleById[catId] ?? catId}
                             </Badge>
                           ))}
@@ -356,7 +379,11 @@ export default function CatalogPage() {
                   {p.photoUrl ? (
                     <div className="relative h-28 w-28 shrink-0">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={withBasePath(p.photoUrl)} alt="" className="h-full w-full object-cover" />
+                      <img
+                        src={withBasePath(p.photoUrl)}
+                        alt=""
+                        className="h-full w-full object-cover"
+                      />
                     </div>
                   ) : (
                     <div className="flex h-28 w-28 shrink-0 items-center justify-center bg-secondary text-xs text-muted-foreground">
@@ -373,7 +400,11 @@ export default function CatalogPage() {
                     </p>
                     <div className="mt-2 flex flex-wrap gap-1.5">
                       {p.categories.map((catId) => (
-                        <Badge key={catId} variant="secondary" className="px-2 py-0 text-[10px] font-normal">
+                        <Badge
+                          key={catId}
+                          variant="secondary"
+                          className="px-2 py-0 text-[10px] font-normal"
+                        >
                           {categoryTitleById[catId] ?? catId}
                         </Badge>
                       ))}
@@ -397,13 +428,21 @@ export default function CatalogPage() {
                   }}
                   title={selectedIds.has(p.id) ? "Убрать из маршрута" : "Добавить в маршрут"}
                 >
-                  {selectedIds.has(p.id) ? <Check className="h-4 w-4" /> : <Plus className="h-4 w-4" />}
+                  {selectedIds.has(p.id) ? (
+                    <Check className="h-4 w-4" />
+                  ) : (
+                    <Plus className="h-4 w-4" />
+                  )}
                 </Button>
               </li>
             ))}
           </ul>
           {hasMore ? (
-            <Button variant="outline" className="mt-4 w-full sm:w-auto" onClick={() => setPage((p) => p + 1)}>
+            <Button
+              variant="outline"
+              className="mt-4 w-full sm:w-auto"
+              onClick={() => setPage((p) => p + 1)}
+            >
               Показать ещё
             </Button>
           ) : null}

@@ -78,11 +78,7 @@ export function RouteCard({
       <CardContent className="p-4">
         <div className="mb-2 flex flex-wrap gap-1.5">
           {tags.map((tag) => (
-            <Badge
-              key={tag}
-              variant="secondary"
-              className="text-xs font-normal"
-            >
+            <Badge key={tag} variant="secondary" className="text-xs font-normal">
               {tag}
             </Badge>
           ))}

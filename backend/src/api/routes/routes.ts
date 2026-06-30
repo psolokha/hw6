@@ -43,4 +43,3 @@ export async function registerRouteBuilderRoutes(app: FastifyInstance) {
     return out;
   });
 }
-

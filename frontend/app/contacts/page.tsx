@@ -15,12 +15,12 @@ export default function ContactsPage() {
           <h2 className="text-lg font-semibold text-foreground">Обратная связь</h2>
           <div className="mt-3 space-y-2 text-sm text-muted-foreground">
             <p>
-              - <span className="font-medium text-foreground">Вопросы/идеи</span>: через issues/репозиторий проекта (если
-              используете GitHub).
+              - <span className="font-medium text-foreground">Вопросы/идеи</span>: через
+              issues/репозиторий проекта (если используете GitHub).
             </p>
             <p>
-              - <span className="font-medium text-foreground">Ошибки</span>: приложите шаги воспроизведения и скрин/лог
-              из консоли браузера.
+              - <span className="font-medium text-foreground">Ошибки</span>: приложите шаги
+              воспроизведения и скрин/лог из консоли браузера.
             </p>
             <p>
               - <span className="font-medium text-foreground">Участие</span>: посмотрите раздел{" "}
@@ -47,4 +47,3 @@ export default function ContactsPage() {
     </AppShell>
   )
 }
-

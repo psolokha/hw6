@@ -9,7 +9,8 @@ export default function AboutPage() {
         <header className="space-y-2">
           <h1 className="font-serif text-2xl font-bold text-foreground sm:text-3xl">О проекте</h1>
           <p className="text-muted-foreground">
-            NearStep — учебный проект: подбор достопримечательностей и сборка кольцевых пеших маршрутов.
+            NearStep — учебный проект: подбор достопримечательностей и сборка кольцевых пеших
+            маршрутов.
           </p>
         </header>
 
@@ -26,9 +27,11 @@ export default function AboutPage() {
         <section className="rounded-xl border border-border bg-card p-4 sm:p-6">
           <h2 className="text-lg font-semibold text-foreground">Как устроены данные</h2>
           <p className="mt-3 text-sm text-muted-foreground">
-            Каталог и маршруты загружаются с backend (Fastify + Supabase). POI и локации приходят через OSM-провайдеры.
-            Избранное гостя хранится в <span className="font-medium text-foreground">localStorage</span>; после входа
-            синхронизируется с сервером через Supabase Auth и API <span className="font-medium text-foreground">/api/favorites</span>.
+            Каталог и маршруты загружаются с backend (Fastify + Supabase). POI и локации приходят
+            через OSM-провайдеры. Избранное гостя хранится в{" "}
+            <span className="font-medium text-foreground">localStorage</span>; после входа
+            синхронизируется с сервером через Supabase Auth и API{" "}
+            <span className="font-medium text-foreground">/api/favorites</span>.
           </p>
         </section>
 
@@ -41,4 +44,3 @@ export default function AboutPage() {
     </AppShell>
   )
 }
-

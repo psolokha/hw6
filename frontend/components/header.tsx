@@ -19,9 +19,7 @@ export function Header() {
           <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary">
             <MapPin className="h-5 w-5 text-primary-foreground" />
           </div>
-          <span className="font-serif text-xl font-semibold tracking-tight">
-            NearStep
-          </span>
+          <span className="font-serif text-xl font-semibold tracking-tight">NearStep</span>
         </div>
 
         <nav className="hidden items-center gap-8 md:flex">
@@ -53,7 +51,7 @@ export function Header() {
           <Button className="hidden md:flex" asChild>
             <Link href="/route/build">Маршрут</Link>
           </Button>
-          
+
           <DropdownMenu>
             <DropdownMenuTrigger asChild className="md:hidden">
               <Button variant="ghost" size="icon">

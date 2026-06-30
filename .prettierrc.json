@@ -1,0 +1,12 @@
+{
+  "printWidth": 100,
+  "semi": true,
+  "singleQuote": false,
+  "trailingComma": "all",
+  "overrides": [
+    {
+      "files": ["frontend/**/*.{ts,tsx,js,jsx,mjs}"],
+      "options": { "semi": false }
+    }
+  ]
+}

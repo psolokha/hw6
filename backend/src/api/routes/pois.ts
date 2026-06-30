@@ -53,7 +53,8 @@ async function getPoisNearbyWithFallback(params: {
 export async function registerPoiRoutes(app: FastifyInstance) {
   app.get("/api/pois", async (req, reply) => {
     const categoryIds = parseCategoryIds((req.query as any)?.categoryIds);
-    const cityTitle = typeof (req.query as any)?.cityTitle === "string" ? (req.query as any).cityTitle : undefined;
+    const cityTitle =
+      typeof (req.query as any)?.cityTitle === "string" ? (req.query as any).cityTitle : undefined;
 
     const parsed = z
       .object({
@@ -144,7 +145,8 @@ export async function registerPoiRoutes(app: FastifyInstance) {
       return reply.status(502).send(unknownError("Провайдер временно недоступен"));
     }
 
-    if (!out) return reply.status(404).send({ error: { message: "POI не найден", kind: "UNKNOWN" } });
+    if (!out)
+      return reply.status(404).send({ error: { message: "POI не найден", kind: "UNKNOWN" } });
 
     if (!useMock) {
       await setProviderCache({

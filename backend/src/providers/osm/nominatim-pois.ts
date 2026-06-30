@@ -31,7 +31,14 @@ const itemSchema = z.object({
 
 const responseSchema = z.array(itemSchema);
 
-const POI_SEARCH_TERMS = ["музей", "парк", "памятник", "достопримечательность", "театр", "собор"] as const;
+const POI_SEARCH_TERMS = [
+  "музей",
+  "парк",
+  "памятник",
+  "достопримечательность",
+  "театр",
+  "собор",
+] as const;
 
 function haversineMeters(a: LatLng, b: LatLng) {
   const R = 6371e3;
@@ -45,7 +52,10 @@ function haversineMeters(a: LatLng, b: LatLng) {
 }
 
 function nominatimItemToPoi(it: z.infer<typeof itemSchema>): PoiDTO {
-  const parts = it.display_name.split(",").map((p) => p.trim()).filter(Boolean);
+  const parts = it.display_name
+    .split(",")
+    .map((p) => p.trim())
+    .filter(Boolean);
   const title = parts[0] ?? it.display_name;
   const subtitle = parts.slice(1, 3).join(", ");
 
@@ -118,7 +128,10 @@ export async function nominatimGetPoisNearby(params: {
   const want = params.categoryIds?.length ? new Set(params.categoryIds) : null;
   if (want) pois = pois.filter((p) => p.categories.some((c) => want.has(c)));
 
-  pois.sort((a, b) => haversineMeters(params.center, a.location) - haversineMeters(params.center, b.location));
+  pois.sort(
+    (a, b) =>
+      haversineMeters(params.center, a.location) - haversineMeters(params.center, b.location),
+  );
   return pois.slice(0, 80);
 }
 

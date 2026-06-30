@@ -16,4 +16,3 @@ export function stableStringify(value: unknown): string {
 export function makeCacheKey(prefix: string, params: unknown): string {
   return `${prefix}:${stableStringify(params)}`;
 }
-

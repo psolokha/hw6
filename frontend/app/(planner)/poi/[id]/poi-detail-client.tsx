@@ -37,7 +37,7 @@ export function PoiDetailClient({ id }: { id: string }) {
     ;(async () => {
       try {
         const p = await fetch(new URL(`/api/pois/${encodeURIComponent(id)}`, backendUrl)).then(
-          (r) => (r.ok ? (r.json() as Promise<PoiDTO>) : null)
+          (r) => (r.ok ? (r.json() as Promise<PoiDTO>) : null),
         )
         if (!cancelled) setPoi(p)
       } catch {
@@ -74,7 +74,9 @@ export function PoiDetailClient({ id }: { id: string }) {
 
   if (poi === undefined) {
     return (
-      <div className="flex min-h-[30vh] items-center justify-center text-muted-foreground">Загрузка…</div>
+      <div className="flex min-h-[30vh] items-center justify-center text-muted-foreground">
+        Загрузка…
+      </div>
     )
   }
 
@@ -93,8 +95,7 @@ export function PoiDetailClient({ id }: { id: string }) {
     <div className="space-y-6">
       <Button variant="ghost" size="sm" className="gap-2 px-0" asChild>
         <Link href="/catalog">
-          <ArrowLeft className="h-4 w-4" />
-          К каталогу
+          <ArrowLeft className="h-4 w-4" />К каталогу
         </Link>
       </Button>
 
@@ -112,7 +113,9 @@ export function PoiDetailClient({ id }: { id: string }) {
 
         <div className="space-y-4 p-4 sm:p-6">
           <header>
-            <h1 className="font-serif text-2xl font-bold text-foreground sm:text-3xl">{poi.title}</h1>
+            <h1 className="font-serif text-2xl font-bold text-foreground sm:text-3xl">
+              {poi.title}
+            </h1>
             <p className="mt-2 flex flex-wrap items-center gap-2 font-mono text-sm text-muted-foreground">
               <MapPinned className="h-4 w-4" />
               {coordsLine}
@@ -126,13 +129,15 @@ export function PoiDetailClient({ id }: { id: string }) {
           )}
 
           <div className="flex flex-wrap gap-2">
-            <Button className="gap-2" onClick={() => openInMaps(poi.location.lat, poi.location.lng)}>
+            <Button
+              className="gap-2"
+              onClick={() => openInMaps(poi.location.lat, poi.location.lng)}
+            >
               <ExternalLink className="h-4 w-4" />
               Открыть в картах
             </Button>
             <Button variant="outline" className="gap-2" onClick={savePoi}>
-              <Heart className="h-4 w-4" />
-              В избранное
+              <Heart className="h-4 w-4" />В избранное
             </Button>
             {poi.externalUrl ? (
               <Button variant="outline" asChild>
@@ -147,4 +152,3 @@ export function PoiDetailClient({ id }: { id: string }) {
     </div>
   )
 }
-

@@ -22,9 +22,7 @@ export function StatsSection() {
                 <div className="font-serif text-2xl font-bold text-foreground lg:text-3xl">
                   {stat.value}
                 </div>
-                <div className="mt-1 text-sm text-muted-foreground">
-                  {stat.label}
-                </div>
+                <div className="mt-1 text-sm text-muted-foreground">{stat.label}</div>
               </div>
             )
           })}

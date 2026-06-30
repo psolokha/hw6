@@ -41,13 +41,17 @@ export function MapPreview() {
           const apiKeyRaw = process.env.NEXT_PUBLIC_YANDEX_MAPS_API_KEY
           const apiKey = (apiKeyRaw ?? "").trim()
           const isMissingKey =
-            !apiKey || apiKey.toLowerCase() === "undefined" || apiKey.toLowerCase() === "your_api_key"
+            !apiKey ||
+            apiKey.toLowerCase() === "undefined" ||
+            apiKey.toLowerCase() === "your_api_key"
 
           if (isMissingKey) {
             // В учебном проекте ключ может отсутствовать — показываем статичное демо-превью,
             // чтобы UI не выглядел как "ошибка".
             setMode("fallback")
-            setHint('Чтобы включить интерактивную карту, задайте NEXT_PUBLIC_YANDEX_MAPS_API_KEY и перезапустите dev-сервер.')
+            setHint(
+              "Чтобы включить интерактивную карту, задайте NEXT_PUBLIC_YANDEX_MAPS_API_KEY и перезапустите dev-сервер.",
+            )
             return
           }
 
@@ -110,8 +114,8 @@ export function MapPreview() {
             {
               preset: "islands#redCircleDotIconWithCaption",
               iconCaption: String(idx + 1),
-            }
-          )
+            },
+          ),
         )
       })
 
@@ -119,8 +123,8 @@ export function MapPreview() {
         new ym.Polyline(
           [...markers.map((m) => m.coords), markers[0].coords],
           { hintContent: "Маршрут" },
-          { strokeColor: "#ef4444", strokeWidth: 4, strokeOpacity: 0.8 }
-        )
+          { strokeColor: "#ef4444", strokeWidth: 4, strokeOpacity: 0.8 },
+        ),
       )
 
       mapRef.current = map
@@ -145,12 +149,14 @@ export function MapPreview() {
     if (!navigator.geolocation || !mapRef.current) return
     navigator.geolocation.getCurrentPosition(
       (pos) => {
-        mapRef.current?.setCenter([pos.coords.latitude, pos.coords.longitude], 15, { duration: 250 })
+        mapRef.current?.setCenter([pos.coords.latitude, pos.coords.longitude], 15, {
+          duration: 250,
+        })
       },
       () => {
         setHint("Не удалось получить геолокацию")
         setTimeout(() => setHint(null), 2500)
-      }
+      },
     )
   }
 

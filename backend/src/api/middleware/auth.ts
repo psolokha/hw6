@@ -6,9 +6,7 @@ const envSchema = z.object({
   SUPABASE_URL: z.string().url(),
 });
 
-function getJwtConfig():
-  | { jwks: ReturnType<typeof createRemoteJWKSet>; issuer: string }
-  | null {
+function getJwtConfig(): { jwks: ReturnType<typeof createRemoteJWKSet>; issuer: string } | null {
   const parsed = envSchema.safeParse(process.env);
   if (!parsed.success) return null;
   const env = parsed.data;
@@ -18,7 +16,9 @@ function getJwtConfig():
   };
 }
 
-export async function requireUserIdFromBearer(authHeader: string | undefined): Promise<string | null> {
+export async function requireUserIdFromBearer(
+  authHeader: string | undefined,
+): Promise<string | null> {
   if (!authHeader) return null;
   const m = /^Bearer\s+(.+)$/.exec(authHeader);
   if (!m) return null;
@@ -38,4 +38,3 @@ export async function requireUserIdFromBearer(authHeader: string | undefined): P
     return null;
   }
 }
-

@@ -7,4 +7,3 @@ export async function registerCategoryRoutes(app: FastifyInstance) {
     return CATEGORIES;
   });
 }
-

@@ -2,7 +2,12 @@ import type { LocationSuggestionDTO, PoiDTO } from "../../core/contracts.js";
 
 export const mockLocations: LocationSuggestionDTO[] = [
   { id: "loc-rome", title: "Рим", subtitle: "Италия", center: { lat: 41.9028, lng: 12.4964 } },
-  { id: "loc-barcelona", title: "Барселона", subtitle: "Испания", center: { lat: 41.3851, lng: 2.1734 } },
+  {
+    id: "loc-barcelona",
+    title: "Барселона",
+    subtitle: "Испания",
+    center: { lat: 41.3851, lng: 2.1734 },
+  },
   { id: "loc-kyoto", title: "Киото", subtitle: "Япония", center: { lat: 35.0116, lng: 135.7681 } },
   { id: "loc-moscow", title: "Москва", subtitle: "Россия", center: { lat: 55.7558, lng: 37.6176 } },
 ];
@@ -93,4 +98,3 @@ export const mockPoisByLocationId: Record<string, PoiDTO[]> = {
 };
 
 export const mockPois: PoiDTO[] = Object.values(mockPoisByLocationId).flat();
-

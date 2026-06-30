@@ -7,7 +7,7 @@ export type LatLng = {
 
 export type DistanceMeters = number
 
-export type LocationMode = 'city' | 'nearby'
+export type LocationMode = "city" | "nearby"
 
 export type LocationSuggestionDTO = {
   id: Id
@@ -18,13 +18,13 @@ export type LocationSuggestionDTO = {
 
 export type LocationSelectionDTO =
   | {
-      mode: 'city'
+      mode: "city"
       locationId: Id
       title: string
       center?: LatLng
     }
   | {
-      mode: 'nearby'
+      mode: "nearby"
       title: string
       center: LatLng
       radiusMeters: DistanceMeters
@@ -39,7 +39,7 @@ export type PoiDTO = {
   id: Id
   title: string
   description?: string
-  categories: CategoryDTO['id'][]
+  categories: CategoryDTO["id"][]
   location: LatLng
   photoUrl?: string
   externalUrl?: string
@@ -50,7 +50,7 @@ export type RouteStopDTO = {
   poi: PoiDTO
 }
 
-export type RouteVariantKind = 'shorter' | 'near' | 'longer'
+export type RouteVariantKind = "shorter" | "near" | "longer"
 
 export type RouteVariantDTO = {
   id: Id
@@ -63,16 +63,15 @@ export type RouteVariantDTO = {
 
 export type FavoritesEntryDTO =
   | {
-      type: 'poi'
+      type: "poi"
       id: Id
       createdAtIso: string
       poi: PoiDTO
     }
   | {
-      type: 'route'
+      type: "route"
       id: Id
       createdAtIso: string
       route: RouteVariantDTO
       title?: string
     }
-

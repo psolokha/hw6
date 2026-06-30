@@ -134,7 +134,12 @@ export default function FavoritesPage() {
                     <Button variant="outline" size="sm" asChild>
                       <Link href={`/poi/${e.poi.id}`}>Открыть</Link>
                     </Button>
-                    <Button variant="ghost" size="icon" onClick={() => onRemove(e.id)} aria-label="Удалить">
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => onRemove(e.id)}
+                      aria-label="Удалить"
+                    >
                       <Trash2 className="h-4 w-4" />
                     </Button>
                   </div>
@@ -151,7 +156,8 @@ export default function FavoritesPage() {
                         {e.title ?? `Маршрут · ${formatDistance(e.route.totalDistanceMeters)}`}
                       </h2>
                       <p className="text-xs text-muted-foreground">
-                        {e.route.stops.length} остановок · {new Date(e.createdAtIso).toLocaleString("ru-RU")}
+                        {e.route.stops.length} остановок ·{" "}
+                        {new Date(e.createdAtIso).toLocaleString("ru-RU")}
                       </p>
                       <ol className="mt-2 list-inside list-decimal text-sm text-muted-foreground">
                         {e.route.stops.map((s) => (

@@ -7,15 +7,15 @@ import type {
   LocationSuggestionDTO,
   PoiDTO,
   RouteVariantDTO,
-} from '@/data/types'
+} from "@/data/types"
 
 export type RequestOptions = {
   signal?: AbortSignal
 }
 
 export type GetPoisParams =
-  | { by: 'location'; location: LocationSelectionDTO; categoryIds?: Id[] }
-  | { by: 'nearby'; center: LatLng; radiusMeters: number; categoryIds?: Id[] }
+  | { by: "location"; location: LocationSelectionDTO; categoryIds?: Id[] }
+  | { by: "nearby"; center: LatLng; radiusMeters: number; categoryIds?: Id[] }
 
 export type BuildRoutesParams = {
   start: LatLng
@@ -37,4 +37,3 @@ export interface NavigatorDataSource {
   saveFavorite(entry: FavoritesEntryDTO, opts?: RequestOptions): Promise<void>
   removeFavorite(id: Id, opts?: RequestOptions): Promise<void>
 }
-

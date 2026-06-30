@@ -1,4 +1,4 @@
- "use client"
+"use client"
 
 import Link from "next/link"
 import { useMemo, useState } from "react"
@@ -70,7 +70,7 @@ export default function HomePage() {
 
     const expectedTags = categoryTagMap[activeCategory] ?? []
     return featuredRoutes.filter((route) =>
-      route.tags.some((tag) => expectedTags.some((needle) => tag.toLowerCase().includes(needle)))
+      route.tags.some((tag) => expectedTags.some((needle) => tag.toLowerCase().includes(needle))),
     )
   }, [activeCategory])
 
@@ -154,15 +154,23 @@ export default function HomePage() {
               <span className="font-serif text-lg font-semibold">NearStep</span>
             </div>
             <nav className="flex flex-wrap justify-center gap-6 text-sm text-muted-foreground">
-              <Link href="/about" className="hover:text-foreground">О проекте</Link>
-              <Link href="/blog" className="hover:text-foreground">Блог</Link>
-              <Link href="/careers" className="hover:text-foreground">Вакансии</Link>
-              <Link href="/contacts" className="hover:text-foreground">Контакты</Link>
-              <Link href="/privacy" className="hover:text-foreground">Конфиденциальность</Link>
+              <Link href="/about" className="hover:text-foreground">
+                О проекте
+              </Link>
+              <Link href="/blog" className="hover:text-foreground">
+                Блог
+              </Link>
+              <Link href="/careers" className="hover:text-foreground">
+                Вакансии
+              </Link>
+              <Link href="/contacts" className="hover:text-foreground">
+                Контакты
+              </Link>
+              <Link href="/privacy" className="hover:text-foreground">
+                Конфиденциальность
+              </Link>
             </nav>
-            <p className="text-sm text-muted-foreground">
-              © 2026 NearStep. Все права защищены.
-            </p>
+            <p className="text-sm text-muted-foreground">© 2026 NearStep. Все права защищены.</p>
           </div>
         </div>
       </footer>

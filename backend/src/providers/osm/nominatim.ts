@@ -60,7 +60,10 @@ export async function nominatimSearchLocations(q: string): Promise<LocationSugge
 
   const bestByTitle = new Map<string, z.infer<typeof itemSchema>>();
   for (const it of items) {
-    const parts = it.display_name.split(",").map((p) => p.trim()).filter(Boolean);
+    const parts = it.display_name
+      .split(",")
+      .map((p) => p.trim())
+      .filter(Boolean);
     const title = parts[0] ?? it.display_name;
     const prev = bestByTitle.get(title);
     if (!prev) {
@@ -79,7 +82,10 @@ export async function nominatimSearchLocations(q: string): Promise<LocationSugge
   }
 
   return [...bestByTitle.values()].map((it) => {
-    const parts = it.display_name.split(",").map((p) => p.trim()).filter(Boolean);
+    const parts = it.display_name
+      .split(",")
+      .map((p) => p.trim())
+      .filter(Boolean);
     const title = parts[0] ?? it.display_name;
     const subtitle = parts.slice(1, 3).join(", ");
 
@@ -93,4 +99,3 @@ export async function nominatimSearchLocations(q: string): Promise<LocationSugge
     return dto;
   });
 }
-

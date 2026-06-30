@@ -1,10 +1,5 @@
 export type ApiErrorKind =
-  | 'NETWORK'
-  | 'TIMEOUT'
-  | 'RATE_LIMIT'
-  | 'UPSTREAM'
-  | 'VALIDATION'
-  | 'UNKNOWN'
+  "NETWORK" | "TIMEOUT" | "RATE_LIMIT" | "UPSTREAM" | "VALIDATION" | "UNKNOWN"
 
 export class ApiError extends Error {
   readonly kind: ApiErrorKind
@@ -20,10 +15,10 @@ export class ApiError extends Error {
       retryAfterMs?: number
       details?: unknown
       cause?: unknown
-    }
+    },
   ) {
     super(message, { cause: opts.cause })
-    this.name = 'ApiError'
+    this.name = "ApiError"
     this.kind = opts.kind
     this.status = opts.status
     this.retryAfterMs = opts.retryAfterMs
@@ -34,4 +29,3 @@ export class ApiError extends Error {
 export function isApiError(err: unknown): err is ApiError {
   return err instanceof ApiError
 }
-

@@ -68,7 +68,7 @@ export default function LocationPage() {
       setGeoHint(null)
       router.push("/catalog")
     },
-    [router]
+    [router],
   )
 
   const pickNearby = useCallback(() => {
@@ -94,17 +94,19 @@ export default function LocationPage() {
       () => {
         setLoading(false)
         setGeoHint(
-          "Доступ к геолокации запрещён или координаты недоступны. Выберите город вручную или разрешите доступ в настройках браузера."
+          "Доступ к геолокации запрещён или координаты недоступны. Выберите город вручную или разрешите доступ в настройках браузера.",
         )
       },
-      { enableHighAccuracy: true, timeout: 12_000 }
+      { enableHighAccuracy: true, timeout: 12_000 },
     )
   }, [router])
 
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="font-serif text-2xl font-bold text-foreground sm:text-3xl">Область поиска</h1>
+        <h1 className="font-serif text-2xl font-bold text-foreground sm:text-3xl">
+          Область поиска
+        </h1>
         <p className="mt-2 text-muted-foreground">
           Укажите город по подсказкам или используйте режим «рядом со мной» для каталога в радиусе{" "}
           {(NEARBY_RADIUS_METERS / 1000).toFixed(1)} км.
@@ -117,7 +119,9 @@ export default function LocationPage() {
           <AlertTitle>Текущая область</AlertTitle>
           <AlertDescription className="flex flex-wrap items-center gap-2">
             <span className="font-semibold text-foreground">
-              {current.mode === "city" ? current.title : `${current.title} · радиус ${current.radiusMeters} м`}
+              {current.mode === "city"
+                ? current.title
+                : `${current.title} · радиус ${current.radiusMeters} м`}
             </span>
             <Button variant="outline" size="sm" asChild>
               <Link href="/catalog">К выбору маршрутов</Link>
@@ -149,7 +153,9 @@ export default function LocationPage() {
         ) : null}
         <ul className="mt-4 divide-y divide-border rounded-lg border border-border bg-background">
           {query.trim().length >= 2 && !loading && suggestions.length === 0 && !error ? (
-            <li className="px-4 py-6 text-center text-sm text-muted-foreground">Ничего не найдено — измените запрос</li>
+            <li className="px-4 py-6 text-center text-sm text-muted-foreground">
+              Ничего не найдено — измените запрос
+            </li>
           ) : null}
           {suggestions.map((s) => (
             <li key={s.id}>
@@ -174,7 +180,8 @@ export default function LocationPage() {
       <section className="rounded-xl border border-border bg-card p-4 sm:p-6">
         <h2 className="text-sm font-medium text-muted-foreground">Рядом со мной</h2>
         <p className="mt-2 text-sm text-muted-foreground">
-          Каталог точек в круге с центром в вашей геолокации (радиус задан в конфигурации приложения).
+          Каталог точек в круге с центром в вашей геолокации (радиус задан в конфигурации
+          приложения).
         </p>
         {geoHint ? (
           <Alert className="mt-4" variant="default">

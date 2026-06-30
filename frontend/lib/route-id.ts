@@ -24,4 +24,3 @@ export function makeRouteVariantIdFromRoute(route: RouteVariantDTO): Id {
     stops: route.stops,
   })
 }
-

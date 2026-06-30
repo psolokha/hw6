@@ -1,12 +1,12 @@
-import { test, expect } from "@playwright/test"
+import { test, expect } from "@playwright/test";
 
 /**
  * Название: Главная страница открывается
  * Описание: Базовая проверка доступности приложения и заголовка/первого экрана.
  */
 test("Главная: открывается и содержит CTA планировщика", async ({ page }) => {
-  await page.goto("/")
+  await page.goto("/");
 
   // Поскольку это маркетинговая страница, фиксируемся на стабильном тексте CTA.
-  await expect(page.getByRole("link", { name: "Построить маршрут" })).toBeVisible()
-})
+  await expect(page.getByRole("link", { name: "Построить маршрут" })).toBeVisible();
+});

@@ -17,7 +17,10 @@ export function mockSearchLocations(q: string): LocationSuggestionDTO[] {
   if (!needle) return [];
 
   return mockLocations
-    .filter((l) => l.title.toLowerCase().includes(needle) || (l.subtitle ?? "").toLowerCase().includes(needle))
+    .filter(
+      (l) =>
+        l.title.toLowerCase().includes(needle) || (l.subtitle ?? "").toLowerCase().includes(needle),
+    )
     .slice(0, 8);
 }
 
@@ -37,4 +40,3 @@ export function mockGetPoisNearby(params: {
 export function mockGetPoiById(id: string): PoiDTO | null {
   return mockPois.find((p) => p.id === id) ?? null;
 }
-

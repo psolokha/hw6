@@ -1,9 +1,25 @@
 "use client"
 
-import type { BuildRoutesParams, GetPoisParams, NavigatorDataSource, RequestOptions } from "@/data/contracts"
-import type { CategoryDTO, FavoritesEntryDTO, Id, LocationSuggestionDTO, PoiDTO, RouteVariantDTO } from "@/data/types"
+import type {
+  BuildRoutesParams,
+  GetPoisParams,
+  NavigatorDataSource,
+  RequestOptions,
+} from "@/data/contracts"
+import type {
+  CategoryDTO,
+  FavoritesEntryDTO,
+  Id,
+  LocationSuggestionDTO,
+  PoiDTO,
+  RouteVariantDTO,
+} from "@/data/types"
 import { ApiError, type ApiErrorKind } from "@/data/errors"
-import { addFavorite, loadFavorites, removeFavorite as removeLocalFavorite } from "@/lib/app-storage"
+import {
+  addFavorite,
+  loadFavorites,
+  removeFavorite as removeLocalFavorite,
+} from "@/lib/app-storage"
 import { getAccessToken } from "@/lib/supabase-client"
 import { getBackendUrl } from "@/lib/backend-url"
 
@@ -83,7 +99,10 @@ export class HttpNavigatorDataSource implements NavigatorDataSource {
     return await http<PoiDTO[]>(`/api/pois?${q.toString()}`, { signal: opts?.signal })
   }
 
-  async buildRouteVariants(params: BuildRoutesParams, opts?: RequestOptions): Promise<RouteVariantDTO[]> {
+  async buildRouteVariants(
+    params: BuildRoutesParams,
+    opts?: RequestOptions,
+  ): Promise<RouteVariantDTO[]> {
     return await http<RouteVariantDTO[]>("/api/routes/build", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -138,4 +157,3 @@ export class HttpNavigatorDataSource implements NavigatorDataSource {
     })
   }
 }
-

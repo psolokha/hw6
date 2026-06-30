@@ -29,7 +29,8 @@ export default function CareersPage() {
         <header className="space-y-2">
           <h1 className="font-serif text-2xl font-bold text-foreground sm:text-3xl">Вакансии</h1>
           <p className="text-muted-foreground">
-            Сейчас это учебный проект, поэтому вакансии — скорее формат участия и задач для практики.
+            Сейчас это учебный проект, поэтому вакансии — скорее формат участия и задач для
+            практики.
           </p>
         </header>
 
@@ -62,8 +63,12 @@ export default function CareersPage() {
         <section className="rounded-xl border border-border bg-card p-4 sm:p-6">
           <h2 className="text-lg font-semibold text-foreground">Как присоединиться</h2>
           <p className="mt-3 text-sm text-muted-foreground">
-            Напишите через страницу <Link className="underline-offset-4 hover:underline" href="/contacts">контактов</Link>{" "}
-            и укажите, что хотите взять задачу в работу (UI, логика маршрута, избранное, интеграции).
+            Напишите через страницу{" "}
+            <Link className="underline-offset-4 hover:underline" href="/contacts">
+              контактов
+            </Link>{" "}
+            и укажите, что хотите взять задачу в работу (UI, логика маршрута, избранное,
+            интеграции).
           </p>
         </section>
 
@@ -79,4 +84,3 @@ export default function CareersPage() {
     </AppShell>
   )
 }
-

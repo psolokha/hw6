@@ -34,7 +34,9 @@ export function LocationIndicator({ className }: { className?: string }) {
   return (
     <Button
       variant="ghost"
-      className={["hidden max-w-[220px] items-center gap-2 md:flex", className].filter(Boolean).join(" ")}
+      className={["hidden max-w-[220px] items-center gap-2 md:flex", className]
+        .filter(Boolean)
+        .join(" ")}
       asChild
     >
       <Link href="/location" title={locationTitle}>
@@ -44,4 +46,3 @@ export function LocationIndicator({ className }: { className?: string }) {
     </Button>
   )
 }
-

@@ -55,7 +55,8 @@ function elementToPoi(el: z.infer<typeof elementSchema>): PoiDTO | null {
 
   const website = tags.website ?? tags.url;
   const wikidata = tags.wikidata;
-  const externalUrl = website ?? (wikidata ? `https://www.wikidata.org/wiki/${wikidata}` : undefined);
+  const externalUrl =
+    website ?? (wikidata ? `https://www.wikidata.org/wiki/${wikidata}` : undefined);
 
   const dto: PoiDTO = {
     id: osmElementId(el),
@@ -124,12 +125,7 @@ export async function overpassGetPoiById(osmId: string): Promise<PoiDTO | null> 
   const [, kind, idStr] = m;
   const id = Number(idStr);
 
-  const stmt =
-    kind === "n"
-      ? `node(${id});`
-      : kind === "w"
-        ? `way(${id});`
-        : `relation(${id});`;
+  const stmt = kind === "n" ? `node(${id});` : kind === "w" ? `way(${id});` : `relation(${id});`;
 
   const q = `
 [out:json][timeout:25];
@@ -152,4 +148,3 @@ out center tags;
   if (!el) return null;
   return elementToPoi(el);
 }
-

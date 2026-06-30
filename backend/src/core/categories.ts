@@ -22,7 +22,8 @@ export function inferCategoryIdsFromOsmTags(tags: OsmTags): Id[] {
   const building = tags.building;
 
   if (tourism === "museum") out.add("museum");
-  if (tourism === "gallery" || tourism === "attraction" || tourism === "artwork") out.add("culture");
+  if (tourism === "gallery" || tourism === "attraction" || tourism === "artwork")
+    out.add("culture");
   if (historic) out.add("history");
 
   if (natural || leisure === "park" || leisure === "garden") out.add("nature");
@@ -52,4 +53,3 @@ export function inferCategoryIdsFromOsmTags(tags: OsmTags): Id[] {
   if (out.size === 0) out.add("culture");
   return [...out];
 }
-

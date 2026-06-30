@@ -17,17 +17,11 @@ export function SearchSection() {
             />
           </div>
           <div className="flex gap-3">
-            <Button
-              variant="outline"
-              className="h-12 gap-2 border-border bg-background"
-            >
+            <Button variant="outline" className="h-12 gap-2 border-border bg-background">
               <Calendar className="h-4 w-4" />
               <span className="hidden sm:inline">Любые даты</span>
             </Button>
-            <Button
-              variant="outline"
-              className="h-12 gap-2 border-border bg-background"
-            >
+            <Button variant="outline" className="h-12 gap-2 border-border bg-background">
               <Users className="h-4 w-4" />
               <span className="hidden sm:inline">Путешественники</span>
             </Button>

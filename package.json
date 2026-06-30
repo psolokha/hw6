@@ -3,9 +3,13 @@
   "private": true,
   "scripts": {
     "test:e2e": "playwright test",
-    "test:e2e:ui": "playwright test --ui"
+    "test:e2e:ui": "playwright test --ui",
+    "format": "prettier --write \"{frontend,backend,tests}/**/*.{ts,tsx,mjs,cjs,js,jsx}\" \"./*.{ts,mjs,cjs,js}\"",
+    "format:check": "prettier --check \"{frontend,backend,tests}/**/*.{ts,tsx,mjs,cjs,js,jsx}\" \"./*.{ts,mjs,cjs,js}\"",
+    "lint": "npm --prefix frontend run lint"
   },
   "devDependencies": {
-    "@playwright/test": "^1.57.0"
+    "@playwright/test": "^1.57.0",
+    "prettier": "^3.9.4"
   }
 }

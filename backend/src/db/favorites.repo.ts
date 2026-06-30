@@ -123,4 +123,3 @@ export async function syncFavorites(
 
   return { imported, skipped };
 }
-

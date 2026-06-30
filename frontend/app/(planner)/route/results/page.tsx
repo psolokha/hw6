@@ -69,18 +69,22 @@ export default function RouteResultsPage() {
     ;(async () => {
       setLoading(true)
       setError(null)
-        setShowCatalogLink(false)
+      setShowCatalogLink(false)
       try {
         const pois = (draft.pois ?? []).filter(Boolean) as PoiDTO[]
         if (!pois.length) {
-          setError("Не удалось восстановить список точек. Вернитесь в каталог и выберите точки заново.")
+          setError(
+            "Не удалось восстановить список точек. Вернитесь в каталог и выберите точки заново.",
+          )
           setShowCatalogLink(true)
           setVariants([])
           return
         }
 
         if (pois.length < 3) {
-          setError("В выборке меньше трёх достопримечательностей — расширьте область или снимите фильтры.")
+          setError(
+            "В выборке меньше трёх достопримечательностей — расширьте область или снимите фильтры.",
+          )
           setVariants([])
           return
         }
@@ -95,10 +99,10 @@ export default function RouteResultsPage() {
       } catch (e) {
         if (!cancelled) {
           if (e instanceof ApiError) setError(e.message)
-            else {
-              setError("Не удалось построить маршрут.")
-              setShowCatalogLink(true)
-            }
+          else {
+            setError("Не удалось построить маршрут.")
+            setShowCatalogLink(true)
+          }
           setVariants([])
         }
       } finally {
@@ -141,8 +145,12 @@ export default function RouteResultsPage() {
     <div className="space-y-6">
       <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="font-serif text-2xl font-bold text-foreground sm:text-3xl">Варианты маршрута</h1>
-          <p className="text-sm text-muted-foreground">До трёх кольцевых вариантов с порядком остановок.</p>
+          <h1 className="font-serif text-2xl font-bold text-foreground sm:text-3xl">
+            Варианты маршрута
+          </h1>
+          <p className="text-sm text-muted-foreground">
+            До трёх кольцевых вариантов с порядком остановок.
+          </p>
         </div>
         <Button variant="outline" asChild>
           <Link href="/catalog">К каталогу</Link>
@@ -180,22 +188,22 @@ export default function RouteResultsPage() {
                     size="sm"
                     variant="outline"
                     className="gap-1"
-                    onClick={() =>
-                      openRouteInYandex(v)
-                    }
+                    onClick={() => openRouteInYandex(v)}
                   >
                     <ExternalLink className="h-3.5 w-3.5" />
                     Открыть в картах
                   </Button>
                   <Button size="sm" className="gap-1" onClick={() => saveRoute(v)}>
-                    <Heart className="h-3.5 w-3.5" />
-                    В избранное
+                    <Heart className="h-3.5 w-3.5" />В избранное
                   </Button>
                 </div>
               </div>
               <ol className="divide-y divide-border">
                 {v.stops.map((s) => (
-                  <li key={s.order} className="flex flex-col gap-2 px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
+                  <li
+                    key={s.order}
+                    className="flex flex-col gap-2 px-4 py-3 sm:flex-row sm:items-center sm:justify-between"
+                  >
                     <div>
                       <span className="mr-2 inline-flex h-6 w-6 items-center justify-center rounded-full bg-primary text-xs text-primary-foreground">
                         {s.order}

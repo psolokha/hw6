@@ -49,4 +49,3 @@ export async function registerLocationRoutes(app: FastifyInstance) {
     return out;
   });
 }
-

@@ -22,4 +22,3 @@ export function getSupabaseAdmin(): SupabaseClient<any> {
   });
   return cached;
 }
-

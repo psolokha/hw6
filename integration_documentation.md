@@ -37,11 +37,15 @@ flowchart LR
 
 | Job | Шаги |
 |-----|------|
+| `quality` | `Prettier --check` (весь код) + `ESLint` (frontend, `next/core-web-vitals`) |
 | `frontend` | `npm ci` → `npm run typecheck` → `npm run build` |
 | `backend` | `npm ci` → `npm run typecheck` → `npm run build` |
-| `e2e` | Playwright (chromium) с `OSM_MOCK=1`; запускается только при наличии секретов |
+| `e2e` | Playwright (chromium) с `OSM_MOCK=1`; зависит от `quality`, `frontend`, `backend`; запускается только при наличии секретов |
 
-Проверки качества кода: статическая типизация (`tsc --noEmit`) для фронта и бэка + сборка.
+Проверки качества кода:
+- **Форматирование** — Prettier (`npm run format:check`, конфиг `.prettierrc.json`).
+- **Линтинг** — ESLint для фронтенда (`npm run lint`, `eslint-config-next/core-web-vitals`).
+- **Типизация** — `tsc --noEmit` для фронта и бэка + production build.
 
 ### CD — Vercel
 

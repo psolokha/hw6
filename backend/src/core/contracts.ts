@@ -59,4 +59,3 @@ export type FavoritesEntryDTO =
       route: RouteVariantDTO;
       title?: string | undefined;
     };
-

@@ -93,7 +93,11 @@ export default function RouteBuildPage() {
       try {
         const params =
           loc.mode === "nearby"
-            ? ({ by: "nearby" as const, center: loc.center, radiusMeters: loc.radiusMeters } as const)
+            ? ({
+                by: "nearby" as const,
+                center: loc.center,
+                radiusMeters: loc.radiusMeters,
+              } as const)
             : ({ by: "location" as const, location: loc } as const)
         const list = await nav.getPois(params)
         const ids = peekPendingRoutePoiIds()
@@ -129,7 +133,9 @@ export default function RouteBuildPage() {
   const resolveStart = (): Promise<LatLng> => {
     if (startKind === "map") {
       if (mapPoint) return Promise.resolve(mapPoint)
-      return Promise.reject(new Error("Не выбрана точка на карте (в веб-MVP используется центр области)."))
+      return Promise.reject(
+        new Error("Не выбрана точка на карте (в веб-MVP используется центр области)."),
+      )
     }
     return new Promise((resolve, reject) => {
       if (!navigator.geolocation) {
@@ -142,8 +148,9 @@ export default function RouteBuildPage() {
             lat: pos.coords.latitude,
             lng: pos.coords.longitude,
           }),
-        () => reject(new Error("Не удалось получить координаты. Выберите старт «центр области» ниже.")),
-        { enableHighAccuracy: true, timeout: 12_000 }
+        () =>
+          reject(new Error("Не удалось получить координаты. Выберите старт «центр области» ниже.")),
+        { enableHighAccuracy: true, timeout: 12_000 },
       )
     })
   }
@@ -187,7 +194,9 @@ export default function RouteBuildPage() {
   return (
     <div className="mx-auto max-w-lg space-y-6">
       <div>
-        <h1 className="font-serif text-2xl font-bold text-foreground sm:text-3xl">Собрать маршрут</h1>
+        <h1 className="font-serif text-2xl font-bold text-foreground sm:text-3xl">
+          Собрать маршрут
+        </h1>
         <p className="mt-2 text-sm text-muted-foreground">
           Ориентир длины кольцевого пешего маршрута и стартовая точка.
         </p>
@@ -199,8 +208,7 @@ export default function RouteBuildPage() {
           <AlertDescription className="flex flex-col gap-3">
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
               <span className="text-sm text-muted-foreground">
-                Локация по-умолчанию:{" "}
-                <span className="font-semibold text-foreground">Москва</span>
+                Локация по-умолчанию: <span className="font-semibold text-foreground">Москва</span>
               </span>
 
               <Button variant="outline" size="sm" asChild className="w-fit">
@@ -216,7 +224,9 @@ export default function RouteBuildPage() {
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
               <span className="text-sm text-muted-foreground">
                 Текущая локация:{" "}
-                <span className="font-semibold text-foreground">{selectedLocationTitle ?? "—"}</span>
+                <span className="font-semibold text-foreground">
+                  {selectedLocationTitle ?? "—"}
+                </span>
               </span>
 
               <Button variant="outline" size="sm" asChild className="w-fit">
@@ -229,14 +239,20 @@ export default function RouteBuildPage() {
         <p className="text-sm text-muted-foreground">Загрузка точек для маршрута…</p>
       ) : (
         <p className="text-sm text-muted-foreground">
-          Точек в выборке: <span className="font-medium text-foreground">{resolvedPois.length}</span>
+          Точек в выборке:{" "}
+          <span className="font-medium text-foreground">{resolvedPois.length}</span>
           {resolvedPois.length < 3 ? (
-            <span className="block text-destructive">Нужно не менее трёх — вернитесь в каталог.</span>
+            <span className="block text-destructive">
+              Нужно не менее трёх — вернитесь в каталог.
+            </span>
           ) : null}
         </p>
       )}
 
-      <form onSubmit={(e) => void onSubmit(e)} className="space-y-6 rounded-xl border border-border bg-card p-4 sm:p-6">
+      <form
+        onSubmit={(e) => void onSubmit(e)}
+        className="space-y-6 rounded-xl border border-border bg-card p-4 sm:p-6"
+      >
         <div className="space-y-2">
           <Label htmlFor="len">Длинна маршрута, км</Label>
           <Input
@@ -295,7 +311,9 @@ export default function RouteBuildPage() {
 
       <div className="flex gap-2 text-xs text-muted-foreground">
         <Navigation className="h-3.5 w-3.5 shrink-0" />
-        <span>Если GPS недоступен, старт подставится из центра области после попытки геолокации.</span>
+        <span>
+          Если GPS недоступен, старт подставится из центра области после попытки геолокации.
+        </span>
       </div>
     </div>
   )

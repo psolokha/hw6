@@ -11,7 +11,13 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Alert, AlertDescription } from "@/components/ui/alert"
@@ -178,7 +184,9 @@ export function AppHeader() {
         return
       }
 
-      setAuthInfo("Регистрация успешна. Если включено подтверждение email — проверьте почту, затем войдите.")
+      setAuthInfo(
+        "Регистрация успешна. Если включено подтверждение email — проверьте почту, затем войдите.",
+      )
       setAuthMode("login")
     })()
   }
@@ -202,7 +210,7 @@ export function AppHeader() {
                 "rounded-md px-3 py-2 text-sm font-medium transition-colors",
                 item.active(pathname)
                   ? "bg-secondary text-foreground"
-                  : "text-muted-foreground hover:bg-secondary/60 hover:text-foreground"
+                  : "text-muted-foreground hover:bg-secondary/60 hover:text-foreground",
               )}
             >
               {item.label}
@@ -272,7 +280,9 @@ export function AppHeader() {
                   </DropdownMenuItem>
                 ))}
                 {authedEmail ? (
-                  <DropdownMenuItem onClick={() => void supabase.auth.signOut()}>Выйти</DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => void supabase.auth.signOut()}>
+                    Выйти
+                  </DropdownMenuItem>
                 ) : (
                   <DropdownMenuItem
                     onClick={() => {

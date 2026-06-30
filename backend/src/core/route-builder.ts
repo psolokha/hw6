@@ -149,9 +149,10 @@ export function buildRouteVariants(params: {
   };
 
   tryAdd(pickBestVariant("near", nearCount, nearLow, nearHigh, avoid));
-  if (out.length < maxVariants) tryAdd(pickBestVariant("shorter", shorterCount, shorterLow, shorterHigh, avoid));
-  if (out.length < maxVariants) tryAdd(pickBestVariant("longer", longerCount, longerLow, longerHigh, avoid));
+  if (out.length < maxVariants)
+    tryAdd(pickBestVariant("shorter", shorterCount, shorterLow, shorterHigh, avoid));
+  if (out.length < maxVariants)
+    tryAdd(pickBestVariant("longer", longerCount, longerLow, longerHigh, avoid));
 
   return out;
 }
-

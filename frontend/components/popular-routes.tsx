@@ -164,4 +164,3 @@ export function PopularRoutes({ routes }: { routes: FeaturedRoute[] }) {
     </div>
   )
 }
-

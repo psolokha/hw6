@@ -36,7 +36,9 @@ export default function BlogPage() {
       <div className="space-y-8">
         <header className="space-y-2">
           <h1 className="font-serif text-2xl font-bold text-foreground sm:text-3xl">Блог</h1>
-          <p className="text-muted-foreground">Небольшие заметки о функциональности и решениях в NearStep.</p>
+          <p className="text-muted-foreground">
+            Небольшие заметки о функциональности и решениях в NearStep.
+          </p>
         </header>
 
         <ul className="grid gap-4">
@@ -67,4 +69,3 @@ export default function BlogPage() {
     </AppShell>
   )
 }
-
