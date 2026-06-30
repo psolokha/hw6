@@ -1,0 +1,14 @@
+---
+description: Prevent pushing to GitHub when autotests are failing
+alwaysApply: true
+---
+
+# Do not push changes if autotests have not passed
+
+Before any `git push` to this repository:
+
+- **Always** run autotests and confirm they pass.
+  - E2E command: `npm run test:e2e`
+- If tests **fail** — **do not push**. Fix the failures first and rerun tests until they are green.
+
+Exception: pushing is allowed **only if the user explicitly asks** to push despite failing tests (and understands the risk).

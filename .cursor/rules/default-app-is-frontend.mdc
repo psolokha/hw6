@@ -1,0 +1,19 @@
+---
+description: Default app context is frontend/
+alwaysApply: true
+---
+
+# By default, the application is in `frontend/`
+
+If the user asks to:
+- create or change application code,
+- run the app or commands,
+- test or click through the UI,
+- debug behavior in the browser,
+
+then **by default** this refers to the application in the `frontend/` folder.
+
+## Exceptions
+
+- If the user explicitly names another folder or service (for example, `backend/`) — follow the user's direction.
+- If the request is about documentation or analytics — use the relevant files outside `frontend/`.

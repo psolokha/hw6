@@ -1,0 +1,18 @@
+node_modules/
+/test-results/
+/playwright-report/
+/playwright/.cache/
+frontend/.next/
+frontend/out/
+
+# Environment variables
+.env
+.env.*
+!.env.example
+backend/.env
+backend/.env.*
+!backend/.env.example
+
+# Cursor / IDE
+.cursor/settings.json
+

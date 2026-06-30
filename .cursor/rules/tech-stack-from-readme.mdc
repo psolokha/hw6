@@ -1,0 +1,18 @@
+---
+description: Enforce changes within the defined tech stack
+alwaysApply: true
+---
+
+# Tech stack is the source of truth
+
+If the user asks to change or add something in the project, do the work **within the tech stack** documented in `readme.md` (subsection **Технологический стек**).
+
+Current stack (from that table):
+- **Next.js (App Router) + React + TypeScript**
+- UI: **Tailwind CSS + shadcn/ui (built on Radix UI)**
+
+## How to apply
+
+- Do not suggest or introduce alternative frameworks (for example, Vue/Nuxt, Angular, Svelte, Remix, and so on) unless the user explicitly requests it.
+- When new libraries or tools are needed, choose ones that fit naturally with the current stack and the Next.js/React/TypeScript ecosystem.
+- If the user's request clearly requires technology outside the stack (or the stack is outdated) — first suggest updating the tech stack in `readme.md`, then make changes aligned with the updated stack.
