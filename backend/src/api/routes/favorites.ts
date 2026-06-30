@@ -36,7 +36,7 @@ export async function registerFavoritesRoutes(app: FastifyInstance) {
     try {
       return await listFavorites(userId);
     } catch (e) {
-      req.log.error({ err: e }, "list favorites failed");
+      req.log.error({ err: e, userId, event: "favorites_list_failed" }, "list favorites failed");
       return reply.status(500).send(unknownError("Не удалось загрузить избранное"));
     }
   });

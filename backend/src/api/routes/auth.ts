@@ -7,8 +7,11 @@ export async function registerAuthRoutes(app: FastifyInstance) {
   app.get("/api/auth/me", async (req, reply) => {
     const user = await verifyBearerToken(req.headers.authorization);
     if (!user) {
+      req.log.warn({ event: "auth_failed", route: "/api/auth/me" }, "unauthorized");
       return reply.status(401).send({ error: { message: "Не авторизован", kind: "UNKNOWN" } });
     }
+
+    req.log.info({ event: "auth_ok", userId: user.id, provider: user.provider ?? null }, "auth me");
 
     return {
       id: user.id,

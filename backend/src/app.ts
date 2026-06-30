@@ -1,6 +1,7 @@
 import cors from "@fastify/cors";
 import helmet from "@fastify/helmet";
 import rateLimit from "@fastify/rate-limit";
+import { randomUUID } from "node:crypto";
 import Fastify, { type FastifyInstance } from "fastify";
 import { z } from "zod";
 
@@ -12,6 +13,7 @@ import { registerPoiRoutes } from "./api/routes/pois.js";
 import { registerRouteBuilderRoutes } from "./api/routes/routes.js";
 import { registerFavoritesRoutes } from "./api/routes/favorites.js";
 import { unknownError } from "./api/errors.js";
+import { createLoggerOptions } from "./core/logger.js";
 
 const corsSchema = z.object({
   CORS_ORIGIN: z.string().default("http://127.0.0.1:3000"),
@@ -29,8 +31,15 @@ export async function buildApp(): Promise<FastifyInstance> {
     .filter(Boolean);
 
   const app = Fastify({
-    logger: true,
+    logger: createLoggerOptions(),
     bodyLimit: 256 * 1024,
+    disableRequestLogging: true,
+    requestIdHeader: "x-request-id",
+    genReqId: (req) => {
+      const header = req.headers["x-request-id"];
+      if (typeof header === "string" && header.length > 0 && header.length <= 128) return header;
+      return randomUUID();
+    },
   });
 
   await app.register(helmet, {
@@ -58,8 +67,30 @@ export async function buildApp(): Promise<FastifyInstance> {
   await registerRouteBuilderRoutes(app);
   await registerFavoritesRoutes(app);
 
+  app.addHook("onResponse", async (req, reply) => {
+    const level = reply.statusCode >= 500 ? "error" : reply.statusCode >= 400 ? "warn" : "info";
+    req.log[level](
+      {
+        event: "http_request",
+        method: req.method,
+        url: req.url,
+        statusCode: reply.statusCode,
+        responseTimeMs: Math.round(reply.elapsedTime),
+      },
+      "request completed",
+    );
+  });
+
   app.setErrorHandler((err, req, reply) => {
-    req.log.error({ err }, "unhandled error");
+    req.log.error(
+      {
+        err,
+        event: "unhandled_error",
+        method: req.method,
+        url: req.url,
+      },
+      "unhandled error",
+    );
     reply.status(500).send(unknownError("Внутренняя ошибка сервера"));
   });
 

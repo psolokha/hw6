@@ -44,7 +44,10 @@ async function getPoisNearbyWithFallback(params: {
   try {
     return await overpassGetPoisNearby(common);
   } catch (e) {
-    params.log.warn({ err: e }, "overpass nearby failed, trying nominatim fallback");
+    params.log.warn(
+      { err: e, event: "overpass_nearby_failed", fallback: "nominatim" },
+      "overpass nearby failed, trying nominatim fallback",
+    );
     if (!params.cityTitle?.trim()) throw e;
     return await nominatimGetPoisNearby({
       ...common,
@@ -103,7 +106,7 @@ export async function registerPoiRoutes(app: FastifyInstance) {
             log: req.log,
           });
     } catch (e) {
-      req.log.error({ err: e }, "pois nearby failed");
+      req.log.error({ err: e, event: "pois_nearby_failed" }, "pois nearby failed");
       return reply.status(502).send(unknownError("Провайдер временно недоступен"));
     }
 
@@ -144,7 +147,7 @@ export async function registerPoiRoutes(app: FastifyInstance) {
         out = await overpassGetPoiById(id);
       }
     } catch (e) {
-      req.log.error({ err: e }, "poi by id failed");
+      req.log.error({ err: e, event: "poi_by_id_failed" }, "poi by id failed");
       return reply.status(502).send(unknownError("Провайдер временно недоступен"));
     }
 

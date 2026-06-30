@@ -31,7 +31,10 @@ export async function registerLocationRoutes(app: FastifyInstance) {
     try {
       out = useMock ? mockSearchLocations(q) : await nominatimSearchLocations(q);
     } catch (e) {
-      req.log.error({ err: e }, "nominatim search failed");
+      req.log.warn(
+        { err: e, queryLength: q.length, event: "nominatim_search_failed" },
+        "nominatim search failed",
+      );
       return reply.status(502).send(unknownError("Провайдер временно недоступен"));
     }
 

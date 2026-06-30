@@ -1,6 +1,6 @@
 # Документация по интеграциям и деплою (HW6)
 
-> Документ ведётся по мере выполнения шагов задания. Текущий охват: **Шаг 1 — CI/CD**, **Шаг 2 — безопасность**, **Шаг 3 — OAuth2**, **Шаг 4 — аналитика**, **Шаг 5 — пропущен (опционально)**, **Шаг 6 — мониторинг**.
+> Документ ведётся по мере выполнения шагов задания. Текущий охват: **Шаг 1 — CI/CD**, **Шаг 2 — безопасность**, **Шаг 3 — OAuth2**, **Шаг 4 — аналитика**, **Шаг 5 — пропущен (опционально)**, **Шаг 6 — мониторинг**, **Шаг 7 — логирование**.
 
 ## Технологический стек
 
@@ -348,6 +348,125 @@ flowchart TB
 1. [uptimerobot.com](https://uptimerobot.com/) → **Add New Monitor** (HTTP(s)).
 2. URL: `https://hw6-ac72.vercel.app/api/health` и `https://hw6-pi-ruddy.vercel.app/api/health`.
 3. Interval 5 min, alert contacts — email.
+
+## Логирование (Шаг 7)
+
+Backend пишет **структурированные JSON-логи** в stdout (Pino через Fastify). На Vercel они попадают в **Runtime Logs** — централизованное хранение без отдельного платного сервиса.
+
+```mermaid
+flowchart LR
+  BE[hw6-backend\nFastify + Pino] -->|JSON stdout| VL[Vercel Runtime Logs]
+  DEV[Локальный npm run dev] -->|JSON stdout| TERM[Терминал]
+```
+
+### Конфигурация
+
+| Переменная | По умолчанию | Описание |
+|------------|--------------|----------|
+| `LOG_LEVEL` | `info` (prod), `debug` (dev) | `fatal` / `error` / `warn` / `info` / `debug` / `trace` |
+| `NODE_ENV` | — | Влияет на уровень по умолчанию и наличие `stack` в ошибках |
+
+Код: `backend/src/core/logger.ts`, `backend/src/core/log-sanitize.ts`, подключение в `backend/src/app.ts`.
+
+### Формат записи
+
+Каждая строка — один JSON-объект (NDJSON):
+
+| Поле | Описание |
+|------|----------|
+| `level` | `info`, `warn`, `error` |
+| `timestamp` | ISO-8601 |
+| `service` | `nearstep-backend` |
+| `env`, `commit` | окружение и короткий SHA деплоя (Vercel) |
+| `req.id` | `x-request-id` или сгенерированный UUID |
+| `event` | доменное событие (`http_request`, `nominatim_search_failed`, …) |
+| `msg` | человекочитаемое сообщение |
+
+Пример:
+
+```json
+{
+  "level": "warn",
+  "timestamp": "2026-06-30T10:01:12.456Z",
+  "service": "nearstep-backend",
+  "event": "nominatim_search_failed",
+  "queryLength": 4,
+  "err": { "type": "TypeError", "message": "fetch failed" },
+  "msg": "nominatim search failed"
+}
+```
+
+### Защита секретов и PII
+
+- **Redact** (Pino): `Authorization`, `Cookie`, `password`, `token`, `email`, service keys.
+- Заголовки в логах проходят через `sanitizeHeaders`.
+- В ошибках провайдеров не логируется полный текст поискового запроса — только `queryLength`.
+- `userId` (UUID) допускается для отладки favorites; email в логи не пишется.
+
+### Просмотр логов
+
+1. **Prod:** Vercel → проект `hw6-backend` → **Logs** / **Runtime Logs**; фильтр по `level:error` или `event`.
+2. **Локально:** `cd backend && npm run dev` — JSON в терминале; для чтения: `npm run dev 2>&1 | jq .`
+3. **Образцы для анализа:** `artifacts/hw6/log-samples/sample-errors.jsonl`
+
+### AI-анализ логов
+
+Ниже — промпты для Cursor / ChatGPT при разборе типичных инцидентов. Тестировались на `sample-errors.jsonl`.
+
+#### Промпт 1: обзор инцидента
+
+```
+Ты SRE. Ниже NDJSON-логи backend NearStep (Fastify, JSON).
+Найди: (1) корневую причину, (2) затронутые endpoints, (3) цепочку событий по времени,
+(4) рекомендации по исправлению. Не предполагай секреты — в логах они [REDACTED].
+
+<вставить логи>
+```
+
+#### Промпт 2: OSM / провайдеры
+
+```
+Проанализируй логи с event nominatim_search_failed, overpass_nearby_failed, pois_nearby_failed.
+Определи: это временный сбой OSM, таймаут, или ошибка конфигурации (OSM_USER_AGENT, mock)?
+Предложи runbook: что проверить в health check, rate limits, fallback nominatim.
+
+<вставить логи>
+```
+
+#### Промпт 3: auth и favorites
+
+```
+В логах есть auth_failed и favorites_list_failed. Раздели проблемы клиента (401 без токена)
+и сервера (500/timeout Supabase). Нужны ли алерты? Какие метрики добавить?
+
+<вставить логи>
+```
+
+#### Промпт 4: rate limit / abuse
+
+```
+Найди записи со statusCode 429 и высоким числом запросов. Это health-check, бот или DDoS?
+Как настроить allowlist и пороги @fastify/rate-limit?
+
+<вставить логи>
+```
+
+#### Результат теста на sample-errors.jsonl (AI)
+
+| Событие в логах | Вывод AI |
+|-----------------|----------|
+| `nominatim_search_failed` | Внешний Nominatim недоступен → 502 клиенту; проверить OSM status и сеть |
+| `overpass_nearby_failed` + fallback | Overpass таймаут, fallback на Nominatim — штатный сценарий |
+| `pois_nearby_failed` | Оба провайдера упали — критичный инцидент, алерт |
+| `auth_failed` | Ожидаемо без Bearer — не инцидент |
+| `favorites_list_failed` + `userId` | Проблема Supabase/БД для конкретного пользователя |
+| `statusCode: 429` | Rate limit сработал — проверить источник запросов |
+
+## Статус (Шаг 7)
+
+- Структурированное JSON-логирование backend с уровнями и redact.
+- Централизованное хранение через Vercel Runtime Logs.
+- Промпты и образцы логов для AI-анализа в этом разделе и `artifacts/hw6/log-samples/`.
 
 ## Статус (Шаг 6)
 
