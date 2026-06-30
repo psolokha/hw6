@@ -1,6 +1,7 @@
 node_modules
 frontend/.next
 frontend/out
+frontend/next-env.d.ts
 backend/dist
 playwright-report
 test-results
