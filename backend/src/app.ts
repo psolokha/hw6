@@ -19,10 +19,16 @@ const corsSchema = z.object({
 export async function buildApp(): Promise<FastifyInstance> {
   const { CORS_ORIGIN } = corsSchema.parse(process.env);
 
+  // Нормализуем origin(ы): поддержка списка через запятую и устойчивость к хвостовому слэшу,
+  // т.к. браузер шлёт Origin без завершающего "/".
+  const origins = CORS_ORIGIN.split(",")
+    .map((o) => o.trim().replace(/\/+$/, ""))
+    .filter(Boolean);
+
   const app = Fastify({ logger: true });
 
   await app.register(cors, {
-    origin: CORS_ORIGIN,
+    origin: origins.length <= 1 ? (origins[0] ?? false) : origins,
   });
 
   await registerCategoryRoutes(app);
