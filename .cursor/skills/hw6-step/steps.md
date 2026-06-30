@@ -103,13 +103,13 @@
 
 ---
 
-## Шаг 9. Оформление результатов
+## Шаг 9. Оформление результатов ✅ (выполнен)
 
 **Агент:**
-- [ ] свести `integration_documentation.md`
-- [ ] `security_audit.md` актуален
-- [ ] README в корне репозитория (setup, deploy, ссылки на прод)
-- [ ] `artifacts/hw6/step9.md` — итоговый чеклист сдачи ДЗ
+- [x] свести `integration_documentation.md`
+- [x] `security_audit.md` актуален
+- [x] README в корне репозитория (setup, deploy, ссылки на прод)
+- [x] `artifacts/hw6/step9.md` — итоговый чеклист сдачи ДЗ
 
 ---
 
