@@ -1,4 +1,4 @@
-import { createClient } from "@supabase/supabase-js";
+import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 import { z } from "zod";
 
 const envSchema = z.object({
@@ -6,12 +6,14 @@ const envSchema = z.object({
   SUPABASE_SERVICE_ROLE_KEY: z.string().min(10),
 });
 
-let cached: ReturnType<typeof createClient> | null = null;
+// Схема БД не сгенерирована, поэтому типизируем клиент как `any`-Database,
+// иначе supabase-js резолвит таблицы в `never` и ломает insert/upsert.
+let cached: SupabaseClient<any> | null = null;
 
-export function getSupabaseAdmin() {
+export function getSupabaseAdmin(): SupabaseClient<any> {
   if (cached) return cached;
   const env = envSchema.parse(process.env);
-  cached = createClient(env.SUPABASE_URL, env.SUPABASE_SERVICE_ROLE_KEY, {
+  cached = createClient<any>(env.SUPABASE_URL, env.SUPABASE_SERVICE_ROLE_KEY, {
     auth: {
       persistSession: false,
       autoRefreshToken: false,

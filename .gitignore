@@ -5,6 +5,10 @@ node_modules/
 frontend/.next/
 frontend/out/
 
+# Build output / caches
+backend/dist/
+*.tsbuildinfo
+
 # Environment variables
 .env
 .env.*
