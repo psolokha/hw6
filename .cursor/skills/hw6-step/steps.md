@@ -72,15 +72,14 @@
 
 ---
 
-## Шаг 6. Мониторинг
+## Шаг 6. Мониторинг ✅ (выполнен)
 
 **Агент:**
-- [ ] health уже есть (`/api/health`) — расширить при необходимости (DB ping)
-- [ ] UptimeRobot / Vercel Analytics / встроенный мониторинг
-- [ ] алерты — если бесплатно без карты
-- [ ] `artifacts/hw6/step6.md`
-
-**Спросить:** внешний мониторинг vs только Vercel.
+- [x] health расширен (`/api/health`) — DB ping, JWKS, OSM (информационно)
+- [x] frontend `/api/health` — проверка backend
+- [x] GitHub Actions `uptime-monitor.yml` (cron + алерты через Notifications)
+- [x] Vercel Analytics (из шага 4)
+- [x] `artifacts/hw6/step6.md`, `integration_documentation.md`
 
 ---
 

@@ -5,7 +5,18 @@ test.describe("API smoke", () => {
     const res = await request.get("http://127.0.0.1:4000/api/health");
     expect(res.ok()).toBeTruthy();
     const body = await res.json();
-    expect(body).toEqual({ ok: true });
+    expect(body.ok).toBe(true);
+    expect(body.checks.database.status).toBe("ok");
+    expect(body.checks.auth.status).toBe("ok");
+    expect(body.checks.osm.status).toBe("skipped");
+  });
+
+  test("Frontend healthcheck", async ({ request }) => {
+    const res = await request.get("/api/health");
+    expect(res.ok()).toBeTruthy();
+    const body = await res.json();
+    expect(body.ok).toBe(true);
+    expect(body.checks.backend.status).toBe("ok");
   });
 
   test("Backend categories", async ({ request }) => {
