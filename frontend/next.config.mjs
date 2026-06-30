@@ -38,7 +38,7 @@ const nextConfig = {
       "form-action 'self'",
       "frame-ancestors 'none'",
       "object-src 'none'",
-      `connect-src 'self' ${backendUrl} https://${supabaseHost} wss://${supabaseHost} https://va.vercel-scripts.com`,
+      `connect-src 'self' ${backendUrl} https://${supabaseHost} wss://${supabaseHost} https://va.vercel-scripts.com https://accounts.google.com`,
       "img-src 'self' data: blob: https:",
       "font-src 'self' https://fonts.gstatic.com",
       "style-src 'self' 'unsafe-inline'",

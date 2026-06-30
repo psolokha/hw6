@@ -27,4 +27,16 @@ test.describe("API smoke", () => {
     });
     expect(res.status()).toBe(401);
   });
+
+  test("Auth profile: /api/auth/me requires auth (401)", async ({ request }) => {
+    const res = await request.get("http://127.0.0.1:4000/api/auth/me");
+    expect(res.status()).toBe(401);
+  });
+
+  test("Auth profile: invalid JWT on /api/auth/me returns 401", async ({ request }) => {
+    const res = await request.get("http://127.0.0.1:4000/api/auth/me", {
+      headers: { Authorization: "Bearer invalid.token.value" },
+    });
+    expect(res.status()).toBe(401);
+  });
 });

@@ -1,6 +1,6 @@
 # Документация по интеграциям и деплою (HW6)
 
-> Документ ведётся по мере выполнения шагов задания. Текущий охват: **Шаг 1 — CI/CD**, **Шаг 2 — безопасность**.
+> Документ ведётся по мере выполнения шагов задания. Текущий охват: **Шаг 1 — CI/CD**, **Шаг 2 — безопасность**, **Шаг 3 — OAuth2**.
 
 ## Технологический стек
 
@@ -98,6 +98,65 @@ URL бэкенда резолвится через `frontend/lib/backend-url.ts`
 - Аудит зависимостей и кода выполнен, отчёт в `security_audit.md`.
 - Исправления: headers, rate-limit, валидация, Next.js 16.2.9.
 - E2E: **19/19 passed** локально.
+
+## OAuth2 (Шаг 3)
+
+Провайдер: **Google** через **Supabase Auth** (PKCE, state — встроены в Supabase).
+
+### Архитектура
+
+```mermaid
+sequenceDiagram
+  participant U as Браузер
+  participant FE as Next.js frontend
+  participant SB as Supabase Auth
+  participant G as Google OAuth
+  participant BE as Fastify backend
+
+  U->>FE: «Войти через Google»
+  FE->>SB: signInWithOAuth (redirectTo /auth/callback)
+  SB->>G: OAuth authorization
+  G->>SB: authorization code
+  SB->>FE: redirect ?code=...
+  FE->>SB: exchangeCodeForSession (route handler)
+  FE->>BE: API с Bearer JWT
+  BE->>BE: verify JWT (JWKS)
+```
+
+- **Frontend**: `signInWithOAuth`, callback `frontend/app/auth/callback/route.ts`, кнопка в диалоге входа.
+- **Backend**: не обменивает code на token (это делает Supabase); проверяет выданный JWT и отдаёт профиль `GET /api/auth/me`.
+- **Email/пароль** — сохранён как альтернативный способ входа.
+
+### Настройка (один раз)
+
+#### 1. Google Cloud Console
+
+1. [Google Cloud Console](https://console.cloud.google.com/) → APIs & Services → Credentials → Create OAuth client ID (Web application).
+2. **Authorized JavaScript origins**: `http://127.0.0.1:3000`, `https://hw6-pi-ruddy.vercel.app`.
+3. **Authorized redirect URIs**: `https://zparhjgdxiipsxoijkga.supabase.co/auth/v1/callback` (URL Supabase callback, не фронтенда).
+4. Скопировать **Client ID** и **Client Secret**.
+
+#### 2. Supabase Dashboard
+
+1. Authentication → Providers → **Google** → Enable, вставить Client ID/Secret.
+2. Authentication → URL Configuration:
+   - **Site URL**: `https://hw6-pi-ruddy.vercel.app`
+   - **Redirect URLs** (добавить):
+     - `http://127.0.0.1:3000/auth/callback`
+     - `https://hw6-pi-ruddy.vercel.app/auth/callback`
+
+Переменные Vercel для OAuth **не нужны** — ключи хранятся в Supabase. На фронте достаточно `NEXT_PUBLIC_SUPABASE_*`.
+
+### Проверка
+
+- Локально: вход через Google на `/catalog` → после редиректа кнопка «Выйти» с email.
+- Backend: `GET /api/auth/me` с `Authorization: Bearer <access_token>` → `{ id, email, provider: "google" }`.
+- Ошибки OAuth показываются в диалоге входа (`auth_error` query param).
+
+## Статус (Шаг 3)
+
+- Код OAuth (Google + Supabase) в репозитории.
+- Для работы на проде нужна настройка Google + Supabase (см. выше) — Client ID/Secret в консоли провайдера.
 
 ## Безопасность (Шаг 2)
 

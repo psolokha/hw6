@@ -26,6 +26,8 @@ import { LocationIndicator } from "@/components/location-indicator"
 import { supabase } from "@/lib/supabase-client"
 import { getBackendUrl } from "@/lib/backend-url"
 import { clearFavorites, loadFavorites } from "@/lib/app-storage"
+import { formatOAuthError } from "@/lib/oauth"
+import { OAuthButtons } from "@/components/oauth-buttons"
 
 type AuthMode = "login" | "register"
 
@@ -46,6 +48,7 @@ function AuthDialogContent({
   onPasswordChange,
   onModeChange,
   onSubmit,
+  onOAuthError,
 }: {
   email: string
   password: string
@@ -56,6 +59,7 @@ function AuthDialogContent({
   onPasswordChange: (v: string) => void
   onModeChange: (mode: AuthMode) => void
   onSubmit: () => void
+  onOAuthError: (message: string) => void
 }) {
   return (
     <div className="space-y-4">
@@ -109,6 +113,8 @@ function AuthDialogContent({
         <User className="h-4 w-4" />
         {authMode === "login" ? "Войти" : "Зарегистрироваться"}
       </Button>
+
+      {authMode === "login" ? <OAuthButtons onError={onOAuthError} /> : null}
     </div>
   )
 }
@@ -148,6 +154,21 @@ export function AppHeader() {
       }
     })
     return () => sub.subscription.unsubscribe()
+  }, [])
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search)
+    const oauthErr = params.get("auth_error")
+    if (!oauthErr) return
+
+    setAuthError(formatOAuthError(oauthErr))
+    setOpen(true)
+    setAuthMode("login")
+
+    params.delete("auth_error")
+    const qs = params.toString()
+    const nextUrl = qs ? `${window.location.pathname}?${qs}` : window.location.pathname
+    window.history.replaceState({}, "", nextUrl)
   }, [])
 
   const resetAuthMessages = () => {
@@ -262,6 +283,10 @@ export function AppHeader() {
                     resetAuthMessages()
                   }}
                   onSubmit={handleAuthSubmit}
+                  onOAuthError={(message) => {
+                    resetAuthMessages()
+                    setAuthError(message)
+                  }}
                 />
               </DialogContent>
             </Dialog>

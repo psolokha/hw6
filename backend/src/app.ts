@@ -4,6 +4,7 @@ import rateLimit from "@fastify/rate-limit";
 import Fastify, { type FastifyInstance } from "fastify";
 import { z } from "zod";
 
+import { registerAuthRoutes } from "./api/routes/auth.js";
 import { registerCategoryRoutes } from "./api/routes/categories.js";
 import { registerHealthRoutes } from "./api/routes/health.js";
 import { registerLocationRoutes } from "./api/routes/locations.js";
@@ -49,6 +50,7 @@ export async function buildApp(): Promise<FastifyInstance> {
     allowedHeaders: ["Content-Type", "Authorization"],
   });
 
+  await registerAuthRoutes(app);
   await registerCategoryRoutes(app);
   await registerHealthRoutes(app);
   await registerLocationRoutes(app);
