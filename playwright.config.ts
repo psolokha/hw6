@@ -65,7 +65,7 @@ export default defineConfig({
       },
     },
     {
-      command: "npm run dev",
+      command: "npm run build && npm run start -- -H 127.0.0.1",
       cwd: path.join(root, "frontend"),
       url: "http://127.0.0.1:3000",
       reuseExistingServer: false,
@@ -73,6 +73,7 @@ export default defineConfig({
       env: {
         ...process.env,
         ...frontendEnv,
+        NEXT_PUBLIC_DISABLE_VERCEL_ANALYTICS: "1",
         PORT: "3000",
       },
     },

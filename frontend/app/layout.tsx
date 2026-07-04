@@ -12,6 +12,8 @@ const plusJakarta = Plus_Jakarta_Sans({
   weight: ["400", "500", "600", "700"],
 })
 
+const isVercelAnalyticsEnabled = process.env.NEXT_PUBLIC_DISABLE_VERCEL_ANALYTICS !== "1"
+
 export const metadata: Metadata = {
   title: "NearStep — пешие маршруты рядом",
   description:
@@ -48,7 +50,7 @@ export default function RootLayout({
         <Suspense fallback={null}>
           <YandexMetrika />
         </Suspense>
-        {process.env.NODE_ENV === "production" && <Analytics />}
+        {process.env.NODE_ENV === "production" && isVercelAnalyticsEnabled && <Analytics />}
       </body>
     </html>
   )

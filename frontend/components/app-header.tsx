@@ -14,6 +14,7 @@ import {
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -280,6 +281,10 @@ export function AppHeader() {
               <DialogContent>
                 <DialogHeader>
                   <DialogTitle>{authMode === "login" ? "Вход" : "Регистрация"}</DialogTitle>
+                  <DialogDescription>
+                    Войдите по email и паролю или используйте Google OAuth, чтобы синхронизировать
+                    избранное с аккаунтом.
+                  </DialogDescription>
                 </DialogHeader>
                 <AuthDialogContent
                   email={email}
