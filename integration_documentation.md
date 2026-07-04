@@ -40,7 +40,9 @@ Backend на Vercel: `backend/api/index.ts` (без `listen()`), rewrite в `bac
 
 ## OAuth2 (Google + Supabase)
 
-Flow: `signInWithOAuth` → Google → Supabase callback → `exchangeCodeForSession` на `/auth/callback` → API с Bearer JWT. Backend: `GET /api/auth/me` (JWKS).
+Flow: `signInWithOAuth` (PKCE) → Google → Supabase callback → client page `/auth/callback` вызывает `exchangeCodeForSession` в браузере → Supabase session сохраняется во frontend storage → API с Bearer JWT. Backend: `GET /api/auth/me` (JWKS) возвращает профиль и `provider`.
+
+Проверка OAuth callback покрыта mocked E2E: `tests/e2e/oauth.spec.ts` подменяет Supabase token exchange, проверяет состояние `Выйти` во frontend и запрос `/api/auth/me` с Bearer JWT.
 
 **Настройка (один раз):**
 

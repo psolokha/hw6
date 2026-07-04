@@ -20,11 +20,22 @@ function loadEnvFile(filePath: string): Record<string, string> {
 
 const root = __dirname;
 const backendEnv = loadEnvFile(path.join(root, "backend", ".env"));
+const frontendEnv = {
+  ...loadEnvFile(path.join(root, "frontend", ".env")),
+  ...loadEnvFile(path.join(root, "frontend", ".env.local")),
+};
 
 // Только test-user credentials — не переносим PORT и прочие backend-переменные в process.env,
 // иначе Next.js dev server попытается слушать порт 4000.
 if (backendEnv.TEST_USER_EMAIL) process.env.TEST_USER_EMAIL = backendEnv.TEST_USER_EMAIL;
 if (backendEnv.TEST_USER_PASSWORD) process.env.TEST_USER_PASSWORD = backendEnv.TEST_USER_PASSWORD;
+for (const key of [
+  "NEXT_PUBLIC_BACKEND_URL",
+  "NEXT_PUBLIC_SUPABASE_URL",
+  "NEXT_PUBLIC_SUPABASE_ANON_KEY",
+]) {
+  if (!process.env[key] && frontendEnv[key]) process.env[key] = frontendEnv[key];
+}
 
 export default defineConfig({
   testDir: path.join(root, "tests", "e2e"),
@@ -61,6 +72,7 @@ export default defineConfig({
       timeout: 240_000,
       env: {
         ...process.env,
+        ...frontendEnv,
         PORT: "3000",
       },
     },
