@@ -8,7 +8,7 @@
 
 - **Frontend**
   - `signInWithOAuth` (`frontend/lib/oauth.ts`) с redirect на `/auth/callback`.
-  - Route handler `frontend/app/auth/callback/route.ts` — `exchangeCodeForSession`.
+  - Страница callback `frontend/app/auth/callback/page.tsx` — `exchangeCodeForSession`.
   - Кнопка «Войти через Google» в диалоге входа (`oauth-buttons.tsx`, `app-header.tsx`).
   - Обработка ошибок OAuth (query `auth_error`, понятные сообщения).
 - **Backend**
